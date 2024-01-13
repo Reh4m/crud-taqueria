@@ -81,14 +81,14 @@ public class EmployeesList extends Stage {
 
         TableColumn<Employee, String> id_column = createColumn("ID", "id");
 
-        TableColumn<Employee, String> name_column = createColumn("Name", "name");
+        TableColumn<Employee, String> name_column = createColumn("Nombre", "name");
 
         TableColumn<Employee, String> last_name_column = createColumn(
-                "Last Name", "lastName"
+                "Apellidos", "lastName"
         );
 
         TableColumn<Employee, String> phone_number_column = createColumn(
-                "Phone Number", "phoneNumber"
+                "Número de teléfono", "phoneNumber"
         );
 
         TableColumn<Employee, String> email_column = createColumn("Email", "email");
