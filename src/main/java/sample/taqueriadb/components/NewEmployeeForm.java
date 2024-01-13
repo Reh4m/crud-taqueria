@@ -10,6 +10,8 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import sample.taqueriadb.classes.Employee;
+import sample.taqueriadb.models.EmployeeDAO;
 
 /**
  * Ventana que muestra un formulario para agregar un nuevo empleado a la base de datos.
@@ -55,41 +57,79 @@ public class NewEmployeeForm extends Stage {
     }
 
     /**
-     * Despliega los elementos del formulario para recibir los datos del nuevo empleado.
-     * Se hace uso de la clase TextField para recibir los datos por medio de una entrada de texto.
+     * Crea y despliega los elementos del formulario para recibir los datos del nuevo empleado.
+     * Hace uso de la clase TextField para recibir los datos por medio de una entrada de texto.
      */
     private void showEmployeeForm() {
+        // Título.
         Text title = new Text("Ingresa los datos del nuevo empleado");
         grid_pane_form.add(title, 0, 0, 2, 1);
 
+        // Nombre.
         Label name_label = new Label("Nombre:");
         grid_pane_form.add(name_label, 0, 1);
 
         name_input = new TextField();
         grid_pane_form.add(name_input, 1, 1);
 
+        // Apellidos.
         Label last_name_label = new Label("Apellidos:");
         grid_pane_form.add(last_name_label, 0, 2);
 
         last_name_input = new TextField();
         grid_pane_form.add(last_name_input, 1, 2);
 
+        // Número de teléfono.
         Label phone_number_label = new Label("Número de teléfono:");
         grid_pane_form.add(phone_number_label, 0, 3);
 
         phone_number_input = new TextField();
         grid_pane_form.add(phone_number_input, 1, 3);
 
+        // Email.
         Label email_label = new Label("Correo electrónico:");
         grid_pane_form.add(email_label, 0, 4);
 
         email_input = new TextField();
         grid_pane_form.add(email_input, 1, 4);
 
+        // Botón para agregar un nuevo empleado.
         Button btn_add_employee = new Button("Agregar empleado");
         btn_add_employee.setMaxWidth(Double.MAX_VALUE);
+        btn_add_employee.setOnAction(actionEvent -> addNewEmployee());
         grid_pane_form.add(btn_add_employee, 0, 5, 2, 1);
     }
 
+    /**
+     * Obtiene los datos ingresados en el formulario y los asigna a un objeto de tipo Employee.
+     *
+     * @return objeto de tipo Employee con los datos del nuevo empleado.
+     */
+    private Employee getEmployeeData() {
+        return new Employee(
+            name_input.getText(),
+            last_name_input.getText(),
+            phone_number_input.getText(),
+            email_input.getText()
+        );
+    }
 
+    /**
+     * Crea un objeto de tipo Employee con los datos registrados en el formulario y lo inserta en la base de datos.
+     */
+    private void addNewEmployee() {
+        // Se obtienen los datos ingresados en el formulario.
+        Employee new_employee = getEmployeeData();
+
+        try {
+            int rows_affected = EmployeeDAO.add(new_employee);
+
+            System.out.println("Filas afectadas: " + rows_affected);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            // Una vez terminado el proceso se cierra la ventana.
+            this.close();
+        }
+    }
 }
