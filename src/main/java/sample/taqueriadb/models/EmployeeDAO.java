@@ -18,7 +18,7 @@ public class EmployeeDAO extends SQLCommandExecutor {
      */
     public static int add(Employee employee) throws SQLException {
         String query = String.format(
-            "INSERT INTO employee (name, last_name, email, phone_number, email) VALUES ('%s', '%s', '%s', '%s')",
+            "INSERT INTO employee (name, last_name, phone_number, email) VALUES ('%s', '%s', '%s', '%s')",
                 employee.getName(),
                 employee.getLastName(),
                 employee.getPhoneNumber(),
