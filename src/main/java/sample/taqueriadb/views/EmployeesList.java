@@ -7,10 +7,9 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.VBox;
-import javafx.scene.layout.HBox;
-
 import javafx.stage.Stage;
 import sample.taqueriadb.classes.Employee;
+import sample.taqueriadb.components.AddNewEmployee;
 import sample.taqueriadb.models.EmployeeDAO;
 
 import java.sql.ResultSet;
@@ -42,9 +41,7 @@ public class EmployeesList extends Stage {
         // Se abre una ventana con un formulario para agregar un nuevo empleado.
         Button btn_add_employee = new Button("Agregar empleado");
         btn_add_employee.setMaxWidth(Double.MAX_VALUE);
-        btn_add_employee.setOnAction(actionEvent -> {
-            System.out.println("Agregar empleado");
-        });
+        btn_add_employee.setOnAction(actionEvent -> new AddNewEmployee());
 
         // Layout principal.
         // Contiene la tabla de empleados.
