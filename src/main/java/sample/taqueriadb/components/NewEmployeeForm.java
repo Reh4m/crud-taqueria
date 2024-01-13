@@ -11,7 +11,10 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
-public class AddNewEmployee extends Stage {
+/**
+ * Ventana que muestra un formulario para agregar un nuevo empleado a la base de datos.
+ */
+public class NewEmployeeForm extends Stage {
     private Scene scene;
     // Cuadrícula para ordenar los elementos del formulario.
     private GridPane grid_pane_form;
@@ -22,7 +25,7 @@ public class AddNewEmployee extends Stage {
     private TextField phone_number_input;
     private TextField email_input;
 
-    public AddNewEmployee() {
+    public NewEmployeeForm() {
         this.createUI();
         this.setTitle("Agregar nuevo empleado");
         this.setScene(scene);
@@ -87,4 +90,6 @@ public class AddNewEmployee extends Stage {
         btn_add_employee.setMaxWidth(Double.MAX_VALUE);
         grid_pane_form.add(btn_add_employee, 0, 5, 2, 1);
     }
+
+
 }
