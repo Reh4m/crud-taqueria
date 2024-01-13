@@ -2,10 +2,13 @@ package sample.taqueriadb.views;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.VBox;
+import javafx.scene.layout.HBox;
+
 import javafx.stage.Stage;
 import sample.taqueriadb.classes.Employee;
 import sample.taqueriadb.models.EmployeeDAO;
@@ -36,10 +39,19 @@ public class EmployeesList extends Stage {
         // Muestra las columnas de la tabla con la información de los empleados.
         this.showEmployeesList();
 
+        // Se abre una ventana con un formulario para agregar un nuevo empleado.
+        Button btn_add_employee = new Button("Agregar empleado");
+        btn_add_employee.setMaxWidth(Double.MAX_VALUE);
+        btn_add_employee.setOnAction(actionEvent -> {
+            System.out.println("Agregar empleado");
+        });
+
         // Layout principal.
         // Contiene la tabla de empleados.
         VBox container = new VBox();
-        container.getChildren().add(table_view);
+        container.getChildren().addAll(table_view, btn_add_employee);
+        container.setSpacing(5);
+        container.setPadding(new Insets(5));
 
         // Ventana principal.
         scene = new Scene(container, 500, 500);
