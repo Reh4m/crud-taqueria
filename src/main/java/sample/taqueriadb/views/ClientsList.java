@@ -7,6 +7,7 @@ import javafx.collections.ObservableList;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.VBox;
+import sample.taqueriadb.components.NewClientForm;
 import sample.taqueriadb.models.ClientDAO;
 import sample.taqueriadb.classes.Client;
 
@@ -44,7 +45,7 @@ public class ClientsList extends Stage {
         // Layout principal.
         // Contiene la tabla de clientes.
         VBox container = new VBox();
-        container.getChildren().add(table_view);
+        container.getChildren().addAll(table_view, btn_add_client);
 
         // Ventana principal.
         scene = new Scene(container, 500, 500);
