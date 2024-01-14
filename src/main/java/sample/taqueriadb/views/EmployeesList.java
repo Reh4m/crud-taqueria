@@ -25,7 +25,7 @@ public class EmployeesList extends Stage {
     private TableView<Employee> table_view;
 
     public EmployeesList() {
-        this.createUI();
+        createUI();
         this.setTitle("Lista de empleados");
         this.setScene(scene);
         this.show();

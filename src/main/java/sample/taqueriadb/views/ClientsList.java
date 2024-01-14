@@ -24,7 +24,7 @@ public class ClientsList extends Stage {
     private TableView<Client> table_view;
 
     public ClientsList() {
-        this.createUI();
+        createUI();
         this.setTitle("Lista de clientes");
         this.setScene(scene);
         this.show();

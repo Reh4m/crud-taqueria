@@ -27,7 +27,7 @@ public class NewClientForm extends Stage {
     private TextField name_input;
 
     public NewClientForm() {
-        this.createUI();
+        createUI();
         this.setTitle("Agregar cliente");
         this.setScene(scene);
         this.show();

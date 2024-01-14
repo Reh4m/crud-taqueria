@@ -13,6 +13,8 @@ import javafx.stage.Stage;
 import sample.taqueriadb.classes.Employee;
 import sample.taqueriadb.models.EmployeeDAO;
 
+import java.sql.SQLException;
+
 /**
  * Ventana que muestra un formulario para agregar un nuevo empleado a la base de datos.
  */
@@ -28,7 +30,7 @@ public class NewEmployeeForm extends Stage {
     private TextField email_input;
 
     public NewEmployeeForm() {
-        this.createUI();
+        createUI();
         this.setTitle("Agregar nuevo empleado");
         this.setScene(scene);
         this.show();
@@ -125,7 +127,7 @@ public class NewEmployeeForm extends Stage {
             int rows_affected = EmployeeDAO.add(new_employee);
 
             System.out.println("Filas afectadas: " + rows_affected);
-        } catch (Exception e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         } finally {
             // Una vez terminado el proceso se cierra la ventana.
