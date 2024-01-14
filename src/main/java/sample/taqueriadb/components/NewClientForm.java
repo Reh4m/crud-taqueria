@@ -10,7 +10,14 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.scene.text.Text;
+import sample.taqueriadb.classes.Client;
+import sample.taqueriadb.models.ClientDAO;
 
+import java.sql.SQLException;
+
+/**
+ * Ventana que muestra un formulario para agregar un nuevo cliente a la base de datos.
+ */
 public class NewClientForm extends Stage {
     private Scene scene;
     // Cuadrícula para ordenar los elementos del formulario.
@@ -48,6 +55,10 @@ public class NewClientForm extends Stage {
         scene = new Scene(container);
     }
 
+    /**
+     * Crea y despliega los elementos del formulario para recibir los datos del nuevo cliente.
+     * Utiliza la clase TextField para recibir los datos por medio de entradas de texto.
+     */
     private void showClientForm() {
         // Título.
         Text title = new Text("Ingresa el nombre del nuevo cliente");
@@ -63,7 +74,24 @@ public class NewClientForm extends Stage {
         // Botón para agregar un nuevo cliente.
         Button btn_add_client = new Button("Agregar empleado");
         btn_add_client.setMaxWidth(Double.MAX_VALUE);
-        btn_add_client.setOnAction(actionEvent -> {});
+        btn_add_client.setOnAction(actionEvent -> addNewClient());
         grid_pane_form.add(btn_add_client, 0, 2, 2, 1);
+    }
+
+    /**
+     * Obtiene el nombre del cliente escrito en el campo de texto y lo guarda en un objeto de tipo Client, para
+     * posteriormente hacer un INSERT a la base de datos y agregar al nuevo cliente.
+     */
+    private void addNewClient() {
+        try {
+            int rows_affected = ClientDAO.add(new Client(name_input.getText()));
+
+            System.out.println(rows_affected);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            // Una vez terminado el proceso se cierra la ventana.
+            this.close();
+        }
     }
 }
