@@ -36,6 +36,11 @@ public class ClientsList extends Stage {
         // Muestra las columnas de la tabla con la información de los clientes.
         this.showClientsList();
 
+        // Abre una ventana con un formulario para agregar un nuevo cliente.
+        Button btn_add_client = new Button("Agregar cliente");
+        btn_add_client.setMaxWidth(Double.MAX_VALUE);
+        btn_add_client.setOnAction(actionEvent -> new NewClientForm());
+
         // Layout principal.
         // Contiene la tabla de clientes.
         VBox container = new VBox();
