@@ -24,6 +24,8 @@ public class EmployeesList extends Stage {
     private Scene scene;
     private TableView<Employee> table_view;
 
+    private ObservableList<Employee> employees;
+
     public EmployeesList() {
         createUI();
         this.setTitle("Lista de empleados");
@@ -41,7 +43,7 @@ public class EmployeesList extends Stage {
         // Se abre una ventana con un formulario para agregar un nuevo empleado.
         Button btn_add_employee = new Button("Agregar empleado");
         btn_add_employee.setMaxWidth(Double.MAX_VALUE);
-        btn_add_employee.setOnAction(actionEvent -> new NewEmployeeForm());
+        btn_add_employee.setOnAction(actionEvent -> new NewEmployeeForm(this));
 
         // Layout principal.
         // Contiene la tabla de empleados.
@@ -81,12 +83,22 @@ public class EmployeesList extends Stage {
     }
 
     /**
+     * Actualiza la tabla de empleados. Su propósito es cargar nuevamente la lista de empleados después de ocurrir una
+     * acción en la base de datos, por ejemplo, después de hacer un UPDATE a dicha tabla.
+     */
+    public void refreshTable() {
+        employees = getEmployeesList();
+
+        table_view.setItems(employees);
+    }
+
+    /**
      * Despliega la información de todos los empleados obtenidos y los asigna en su respectiva columna para mostrarlos
      * en la tabla de empleados.
      */
     private void showEmployeesList() {
         // Lista de empleados obtenidos desde la base de datos.
-        ObservableList<Employee> employees = getEmployeesList();
+        employees = getEmployeesList();
 
         TableColumn<Employee, String> id_column = createColumn("ID", "id");
 

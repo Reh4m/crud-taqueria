@@ -12,6 +12,7 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import sample.taqueriadb.classes.Employee;
 import sample.taqueriadb.models.EmployeeDAO;
+import sample.taqueriadb.views.EmployeesList;
 
 import java.sql.SQLException;
 
@@ -29,7 +30,12 @@ public class NewEmployeeForm extends Stage {
     private TextField phone_number_input;
     private TextField email_input;
 
-    public NewEmployeeForm() {
+    EmployeesList employees_list;
+
+    public NewEmployeeForm(EmployeesList employees_list) {
+        // Instancia de la clase EmployeesList para manejar la lista de empleados.
+        this.employees_list = employees_list;
+
         createUI();
         this.setTitle("Agregar nuevo empleado");
         this.setScene(scene);
@@ -118,6 +124,7 @@ public class NewEmployeeForm extends Stage {
 
     /**
      * Crea un objeto de tipo Employee con los datos registrados en el formulario y lo inserta en la base de datos.
+     * Por último, se actualiza la tabla de empleados para mostrar al nuevo empleado agregado.
      */
     private void addNewEmployee() {
         // Se obtienen los datos ingresados en el formulario.
@@ -125,6 +132,8 @@ public class NewEmployeeForm extends Stage {
 
         try {
             int rows_affected = EmployeeDAO.add(new_employee);
+
+            employees_list.refreshTable();
 
             System.out.println("Filas afectadas: " + rows_affected);
         } catch (SQLException e) {
