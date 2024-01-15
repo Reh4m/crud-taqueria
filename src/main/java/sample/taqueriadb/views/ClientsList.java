@@ -23,6 +23,8 @@ public class ClientsList extends Stage {
     private Scene scene;
     private TableView<Client> table_view;
 
+    private ObservableList<Client> clients;
+
     public ClientsList() {
         createUI();
         this.setTitle("Lista de clientes");
@@ -40,7 +42,7 @@ public class ClientsList extends Stage {
         // Abre una ventana con un formulario para agregar un nuevo cliente.
         Button btn_add_client = new Button("Agregar cliente");
         btn_add_client.setMaxWidth(Double.MAX_VALUE);
-        btn_add_client.setOnAction(actionEvent -> new NewClientForm());
+        btn_add_client.setOnAction(actionEvent -> new NewClientForm(this));
 
         // Layout principal.
         // Contiene la tabla de clientes.
@@ -75,12 +77,22 @@ public class ClientsList extends Stage {
     }
 
     /**
+     * Actualiza la tabla de clientes. Su propósito es cargar nuevamente la lista de clientes después de ocurrir una
+     * acción en la base de datos, por ejemplo, después de hacer un UPDATE a dicha tabla.
+     */
+    public void refreshTable() {
+        clients = getClientsList();
+
+        table_view.setItems(clients);
+    }
+
+    /**
      * Despliega la información de todos los clientes obtenidos y los asigna en su respectiva columna para mostrarlos
      * en la tabla de clientes.
      */
     private void showClientsList() {
         // Lista de clientes obtenidos desde la base de datos.
-        ObservableList<Client> clients = getClientsList();
+        clients = getClientsList();
 
         TableColumn<Client, String> id_column = createColumn("ID", "id");
 

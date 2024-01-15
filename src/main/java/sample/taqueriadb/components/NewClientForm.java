@@ -12,6 +12,7 @@ import javafx.stage.Stage;
 import javafx.scene.text.Text;
 import sample.taqueriadb.classes.Client;
 import sample.taqueriadb.models.ClientDAO;
+import sample.taqueriadb.views.ClientsList;
 
 import java.sql.SQLException;
 
@@ -26,7 +27,12 @@ public class NewClientForm extends Stage {
     // Entradas de texto.
     private TextField name_input;
 
-    public NewClientForm() {
+    ClientsList clients_list;
+
+    public NewClientForm(ClientsList clients_list) {
+        // Instancia de la clase ClientsList para manejar la tabla de clientes.
+        this.clients_list = clients_list;
+
         createUI();
         this.setTitle("Agregar cliente");
         this.setScene(scene);
@@ -85,6 +91,8 @@ public class NewClientForm extends Stage {
     private void addNewClient() {
         try {
             int rows_affected = ClientDAO.add(new Client(name_input.getText()));
+
+            clients_list.refreshTable();
 
             System.out.println(rows_affected);
         } catch (SQLException e) {
