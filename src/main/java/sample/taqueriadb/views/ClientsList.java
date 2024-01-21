@@ -37,7 +37,10 @@ public class ClientsList extends Stage {
         table_view = new TableView<>();
 
         // Muestra las columnas de la tabla con la información de los clientes.
-        this.showClientsList();
+        showClientsList();
+
+        // Muestra la columna "Editar".
+        addEditButtonToTable();
 
         // Abre una ventana con un formulario para agregar un nuevo cliente.
         Button btn_add_client = new Button("Agregar cliente");
@@ -121,5 +124,36 @@ public class ClientsList extends Stage {
         column.setCellValueFactory(new PropertyValueFactory<>(property_name));
 
         return column;
+    }
+
+    /**
+     * Agrega una columna con botones "Editar" y los despliega en cada celda existente. En otras palabras,
+     * muestra un botón "Editar" en cada fila de la tabla Cliente.
+     */
+    private void addEditButtonToTable() {
+        TableColumn<Client, Void> button_column = new TableColumn<>();
+
+        button_column.setCellFactory(param -> new TableCell<>() {
+            private final Button edit_button = new Button("Editar");
+
+            {
+                edit_button.setOnAction(actionEvent -> {
+                    Client selected_record = table_view.getItems().get(this.getTableRow().getIndex());
+
+                    System.out.println(selected_record.toString());
+                });
+            }
+
+            // Se encarga de desplegar el botón "Editar". En este caso, si la celda no está vacía, el edit_button se
+            // establece como el gráfico de la celda.
+            @Override
+            protected void updateItem(Void item, boolean empty) {
+                super.updateItem(item, empty);
+
+                if (!empty) setGraphic(edit_button);
+            }
+        });
+
+        table_view.getColumns().add(button_column);
     }
 }
