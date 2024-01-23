@@ -13,6 +13,7 @@ import sample.taqueriadb.classes.Client;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -35,12 +36,12 @@ public class ClientsList extends Stage {
     private void createUI() {
         // Instancia la tabla de clientes.
         table_view = new TableView<>();
-
         // Muestra las columnas de la tabla con la información de los clientes.
         showClientsList();
-
         // Muestra la columna "Editar".
         addEditButtonToTable();
+        // Muestra la columna "Borrar"
+        addDeleteButtonToTable();
 
         // Abre una ventana con un formulario para agregar un nuevo cliente.
         Button btn_add_client = new Button("Agregar cliente");
@@ -155,5 +156,36 @@ public class ClientsList extends Stage {
         });
 
         table_view.getColumns().add(button_column);
+    }
+
+    /**
+     * Agrega una columna con botones "Borrar" y los despliega en cada celda existente. En otras palabras,
+     * muestra un botón "Borrar" en cada fila de la tabla Cliente.
+     */
+    private void addDeleteButtonToTable() {
+        TableColumn<Client, Void> delete_column = new TableColumn<>();
+
+        delete_column.setCellFactory(param -> new TableCell<>() {
+            private final Button delete_button = new Button("Borrar");
+
+            {
+                delete_button.setOnAction(actionEvent -> {
+                    Client selected_record = table_view.getItems().get(this.getTableRow().getIndex());
+
+                    System.out.println(selected_record.toString());
+                });
+            }
+
+            // Se encarga de desplegar el botón "Borrar". En este caso, si la celda no está vacía, el delete_button se
+            // establece como el gráfico de la celda.
+            @Override
+            protected void updateItem(Void item, boolean empty) {
+                super.updateItem(item, empty);
+
+                if (!empty) setGraphic(delete_button);
+            }
+        });
+
+        table_view.getColumns().add(delete_column);
     }
 }

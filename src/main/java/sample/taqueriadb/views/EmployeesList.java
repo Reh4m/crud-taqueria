@@ -8,6 +8,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import sample.taqueriadb.classes.Client;
 import sample.taqueriadb.classes.Employee;
 import sample.taqueriadb.components.NewEmployeeForm;
 import sample.taqueriadb.models.EmployeeDAO;
@@ -42,6 +43,9 @@ public class EmployeesList extends Stage {
 
         // Muestra la columna "Editar".
         addEditButtonToTable();
+
+        // Muestra la columna "Borrar".
+        addDeleteButtonToTable();
 
         // Se abre una ventana con un formulario para agregar un nuevo empleado.
         Button btn_add_employee = new Button("Agregar empleado");
@@ -173,5 +177,36 @@ public class EmployeesList extends Stage {
         });
 
         table_view.getColumns().add(button_column);
+    }
+
+    /**
+     * Agrega una columna con botones "Borrar" y los despliega en cada celda existente. En otras palabras,
+     * muestra un botón "Borrar" en cada fila de la tabla Empleado.
+     */
+    private void addDeleteButtonToTable() {
+        TableColumn<Employee, Void> delete_column = new TableColumn<>();
+
+        delete_column.setCellFactory(param -> new TableCell<>() {
+            private final Button delete_button = new Button("Borrar");
+
+            {
+                delete_button.setOnAction(actionEvent -> {
+                    Employee selected_record = table_view.getItems().get(this.getTableRow().getIndex());
+
+                    System.out.println(selected_record.toString());
+                });
+            }
+
+            // Se encarga de desplegar el botón "Borrar". En este caso, si la celda no está vacía, el delete_button se
+            // establece como el gráfico de la celda.
+            @Override
+            protected void updateItem(Void item, boolean empty) {
+                super.updateItem(item, empty);
+
+                if (!empty) setGraphic(delete_button);
+            }
+        });
+
+        table_view.getColumns().add(delete_column);
     }
 }
