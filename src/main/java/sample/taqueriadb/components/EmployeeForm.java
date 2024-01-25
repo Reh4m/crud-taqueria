@@ -32,7 +32,7 @@ public class EmployeeForm extends Stage {
 
     // Referencia a la clase EmployeesList.
     EmployeesList employees_list;
-    // Datos del Empleado a modificar.
+    // Datos del empleado a modificar.
     Employee old_employee;
 
     /**
@@ -42,7 +42,7 @@ public class EmployeeForm extends Stage {
     private final boolean is_new_employee;
 
     /**
-     * Crea una instancia para agregar un nuevo Empleado.
+     * Crea una instancia para agregar un nuevo empleado.
      *
      * @param employees_list Referencia a la instancia de la clase EmployeesList para llamar a sus métodos internos
      *                       e interactuar con la tabla de Empleados.
@@ -58,7 +58,7 @@ public class EmployeeForm extends Stage {
     }
 
     /**
-     * Constructor secundario, encargado de recuperar los datos de un Empleado en el caso de modificar sus atributos y
+     * Constructor secundario, encargado de recuperar los datos de un empleado en el caso de modificar sus atributos y
      * posteriormente actualizarlos.
      *
      * @param employees_list Referencia a la instancia de la clase EmployeesList para llamar a sus métodos internos
@@ -68,16 +68,16 @@ public class EmployeeForm extends Stage {
     public EmployeeForm(EmployeesList employees_list, Employee old_employee) {
         // Instancia de la clase EmployeesList para actualizar la lista de empleados.
         this.employees_list = employees_list;
-        // Instancia del usuario Empleado para recuperar los atributos a actualizar.
+        // Instancia del objeto Employee para recuperar los atributos a actualizar.
         this.old_employee = old_employee;
 
         // Indica que se modificará un empleado.
         is_new_employee = false;
 
-        // Se crean los campos de textos antes de rellenarlos con los datos del Empleado.
+        // Se crean los campos de textos antes de rellenarlos con los datos del empleado.
         setupForm("Editar Empleado");
 
-        // Una vez creados los campos de texto, se establecen los datos del Empleado en sus respectivos campos de texto.
+        // Una vez creados los campos de texto, se establecen los datos del empleado en sus respectivos campos de texto.
         name_input.setText(old_employee.getName());
         last_name_input.setText(old_employee.getLastName());
         phone_number_input.setText(old_employee.getPhoneNumber());
@@ -154,7 +154,7 @@ public class EmployeeForm extends Stage {
         email_input = new TextField();
         grid_pane_form.add(email_input, 1, 4);
 
-        // Botón para agregar o actualizar un Empleado.
+        // Botón para agregar o actualizar un empleado.
         Button btn_add_employee = new Button("Agregar");
         btn_add_employee.setMaxWidth(Double.MAX_VALUE);
         btn_add_employee.setOnAction(actionEvent -> onAddButtonClicked());
@@ -188,7 +188,7 @@ public class EmployeeForm extends Stage {
     }
 
     /**
-     * Agrega un nuevo Empleado a la base de datos. Crea un objeto de tipo Employee con los datos registrados en el
+     * Agrega un nuevo empleado a la base de datos. Crea un objeto de tipo Employee con los datos registrados en el
      * formulario y lo inserta en la base de datos. Por último, se actualiza la tabla de empleados para mostrar al
      * nuevo empleado agregado.
      */
@@ -211,13 +211,16 @@ public class EmployeeForm extends Stage {
     }
 
     /**
-     * Modifica un Empleado existente en la base de datos. Obtiene los datos ingresados en el formulario y actualiza
-     * los datos del Empleado (UPDATE). Por último, se actualiza la tabla de Empleados y se cierra la ventana.
+     * Modifica un empleado existente en la base de datos. Obtiene los datos ingresados en el formulario y actualiza
+     * los datos del empleado (UPDATE). Por último, se actualiza la tabla de Empleados y se cierra la ventana.
      */
     private void updateEmployee() {
         // Se obtienen los datos ingresados en el formulario.
         Employee new_employee = getEmployeeData();
 
+        // Establece el ID del empleado.
+        // Este se obtiene desde la lista de empleados y lo asigna al objeto del empleado modificado.
+        // El ID se utiliza dentro del query para saber qué empleado se va a actualizar.
         new_employee.setId(old_employee.getId());
 
         try {
