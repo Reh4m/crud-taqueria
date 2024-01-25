@@ -29,7 +29,7 @@ public class ClientDAO extends SQLCommandExecutor {
      * @return objeto tipo ResultSet con los datos del cliente.
      */
     public static ResultSet getClientById(int id) throws SQLException {
-        String query = String.format("SELECT * FROM client WHERE id = %d", id);
+        String query = String.format("SELECT * FROM client WHERE id_client = %d", id);
 
         return executeQuery(query);
     }
@@ -52,7 +52,9 @@ public class ClientDAO extends SQLCommandExecutor {
      * @return número de filas afectadas.
      */
     public static int update(Client client) throws SQLException {
-        String query = String.format("UPDATE client SET name = '%s' WHERE id = %d", client.getName(), client.getId());
+        String query = String.format(
+            "UPDATE client SET name = '%s' WHERE id_client = %d", client.getName(), client.getId()
+        );
 
         return executeUpdate(query);
     }
@@ -64,7 +66,7 @@ public class ClientDAO extends SQLCommandExecutor {
      * @return número de filas afectadas.
      */
     public static int delete(int id) throws SQLException {
-        String query = String.format("DELETE FROM client WHERE id = %d", id);
+        String query = String.format("DELETE FROM client WHERE id_client = %d", id);
 
         return executeUpdate(query);
     }

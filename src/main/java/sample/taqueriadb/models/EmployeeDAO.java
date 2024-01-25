@@ -36,7 +36,7 @@ public class EmployeeDAO extends SQLCommandExecutor {
      */
     public static ResultSet getEmployeeById(int id) throws SQLException {
         String query = String.format(
-            "SELECT * FROM employee WHERE id = %d", id);
+            "SELECT * FROM employee WHERE id_employee = %d", id);
 
         return executeQuery(query);
     }
@@ -60,7 +60,7 @@ public class EmployeeDAO extends SQLCommandExecutor {
      */
     public static int update(Employee employee) throws SQLException {
         String query = String.format(
-            "UPDATE employee SET name = '%s', last_name = '%s', email = '%s', phone_number = '%s' WHERE id = %d",
+            "UPDATE employee SET name = '%s', last_name = '%s', email = '%s', phone_number = '%s' WHERE id_employee = %d",
                 employee.getName(),
                 employee.getLastName(),
                 employee.getEmail(),
@@ -78,7 +78,7 @@ public class EmployeeDAO extends SQLCommandExecutor {
      * @return número de filas afectadas.
      */
     public static int delete(int id) throws SQLException {
-        String query = String.format("DELETE FROM employee WHERE id = %d", id);
+        String query = String.format("DELETE FROM employee WHERE id_employee = %d", id);
 
         return executeUpdate(query);
     }
