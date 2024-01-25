@@ -8,9 +8,8 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import sample.taqueriadb.classes.Client;
 import sample.taqueriadb.classes.Employee;
-import sample.taqueriadb.components.NewEmployeeForm;
+import sample.taqueriadb.components.EmployeeForm;
 import sample.taqueriadb.models.EmployeeDAO;
 
 import java.sql.ResultSet;
@@ -50,7 +49,7 @@ public class EmployeesList extends Stage {
         // Se abre una ventana con un formulario para agregar un nuevo empleado.
         Button btn_add_employee = new Button("Agregar empleado");
         btn_add_employee.setMaxWidth(Double.MAX_VALUE);
-        btn_add_employee.setOnAction(actionEvent -> new NewEmployeeForm(this));
+        btn_add_employee.setOnAction(actionEvent -> new EmployeeForm(this));
 
         // Layout principal.
         // Contiene la tabla de empleados.
@@ -162,7 +161,7 @@ public class EmployeesList extends Stage {
                 edit_button.setOnAction(actionEvent -> {
                     Employee selected_record = table_view.getItems().get(this.getTableRow().getIndex());
 
-                    System.out.println(selected_record.toString());
+                    openEmployeeForm(selected_record);
                 });
             }
 
@@ -208,5 +207,16 @@ public class EmployeesList extends Stage {
         });
 
         table_view.getColumns().add(delete_column);
+    }
+
+    /**
+     * Abre el formulario EmployeeForm para editar un empleado existente.
+     * Este método crea una instancia de EmployeeForm, pasando la instancia actual de EmployeesList y el objeto
+     * Employee del empleado a modificar.
+     *
+     * @param old_employee El empleado a ser modificado.
+     */
+    private void openEmployeeForm(Employee old_employee) {
+        new EmployeeForm(this, old_employee);
     }
 }
