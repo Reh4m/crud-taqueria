@@ -60,13 +60,14 @@ public class EmployeeForm extends Stage {
         // Instancia del usuario Empleado para recuperar los atributos a actualizar.
         this.old_employee = old_employee;
 
-        // Se establecen los datos del Empleado en sus respectivos campos de texto.
+        // Se crean los campos de textos antes de rellenarlos con los datos del Empleado.
+        setupForm("Editar Empleado");
+
+        // Una vez creados los campos de texto, se establecen los datos del Empleado en sus respectivos campos de texto.
         name_input.setText(old_employee.getName());
         last_name_input.setText(old_employee.getLastName());
         phone_number_input.setText(old_employee.getPhoneNumber());
         email_input.setText(old_employee.getEmail());
-
-        setupForm("Editar Empleado");
     }
 
     /**
@@ -89,7 +90,6 @@ public class EmployeeForm extends Stage {
         grid_pane_form.setVgap(10);
         grid_pane_form.setPadding(new Insets(25, 25, 25, 25));
 
-        // Muestra el formulario para agregar un nuevo empleado.
         showEmployeeForm();
 
         // Layout principal.
@@ -104,12 +104,12 @@ public class EmployeeForm extends Stage {
     }
 
     /**
-     * Crea y despliega los elementos del formulario para recibir los datos del nuevo empleado.
+     * Despliega los elementos del formulario para recibir los datos del empleado.
      * Hace uso de la clase TextField para recibir los datos por medio de una entrada de texto.
      */
     private void showEmployeeForm() {
         // Título.
-        Text title = new Text("Ingresa los datos del nuevo empleado");
+        Text title = new Text("Ingresa los datos del empleado");
         grid_pane_form.add(title, 0, 0, 2, 1);
 
         // Nombre.
@@ -140,8 +140,8 @@ public class EmployeeForm extends Stage {
         email_input = new TextField();
         grid_pane_form.add(email_input, 1, 4);
 
-        // Botón para agregar un nuevo empleado.
-        Button btn_add_employee = new Button("Agregar empleado");
+        // Botón para agregar o actualizar un Empleado.
+        Button btn_add_employee = new Button("Agregar");
         btn_add_employee.setMaxWidth(Double.MAX_VALUE);
         btn_add_employee.setOnAction(actionEvent -> addNewEmployee());
         grid_pane_form.add(btn_add_employee, 0, 5, 2, 1);
@@ -150,7 +150,7 @@ public class EmployeeForm extends Stage {
     /**
      * Obtiene los datos ingresados en el formulario y los asigna a un objeto de tipo Employee.
      *
-     * @return objeto de tipo Employee con los datos del nuevo empleado.
+     * @return objeto de tipo Employee con los datos del empleado.
      */
     private Employee getEmployeeData() {
         return new Employee(
