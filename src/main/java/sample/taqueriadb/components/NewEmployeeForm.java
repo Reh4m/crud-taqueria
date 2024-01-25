@@ -17,7 +17,7 @@ import sample.taqueriadb.views.EmployeesList;
 import java.sql.SQLException;
 
 /**
- * Ventana que muestra un formulario para agregar un nuevo empleado a la base de datos.
+ * Ventana que muestra un formulario para agregar o modificar un empleado a la base de datos.
  */
 public class NewEmployeeForm extends Stage {
     private Scene scene;
@@ -30,14 +30,53 @@ public class NewEmployeeForm extends Stage {
     private TextField phone_number_input;
     private TextField email_input;
 
+    // Referencia a la clase EmployeesList.
     EmployeesList employees_list;
+    // Datos del Empleado a modificar.
+    Employee old_employee;
 
+    /**
+     * Crea una instancia para agregar un nuevo Empleado.
+     *
+     * @param employees_list Referencia a la instancia de la clase EmployeesList para llamar a sus métodos internos
+     *                       e interactuar con la tabla de Empleados.
+     */
     public NewEmployeeForm(EmployeesList employees_list) {
-        // Instancia de la clase EmployeesList para manejar la lista de empleados.
+        // Instancia de la clase EmployeesList para actualizar la lista de empleados.
         this.employees_list = employees_list;
 
+        setupForm("Agregar nuevo empleado");
+    }
+
+    /**
+     * Constructor secundario, encargado de recuperar los datos de un Empleado en el caso de modificar sus atributos y
+     * posteriormente actualizarlos.
+     *
+     * @param employees_list Referencia a la instancia de la clase EmployeesList para llamar a sus métodos internos
+     *                       e interactuar con la tabla de Empleados.
+     * @param old_employee objeto tipo Employee con los datos del empleado a modificar.
+     */
+    public NewEmployeeForm(EmployeesList employees_list, Employee old_employee) {
+        // Instancia del usuario Empleado para recuperar los atributos a actualizar.
+        this.old_employee = old_employee;
+
+        // Se establecen los datos del Empleado en sus respectivos campos de texto.
+        name_input.setText(old_employee.getName());
+        last_name_input.setText(old_employee.getLastName());
+        phone_number_input.setText(old_employee.getPhoneNumber());
+        email_input.setText(old_employee.getEmail());
+
+        setupForm("Editar Empleado");
+    }
+
+    /**
+     * Establece la configuración básica de la ventana.
+     *
+     * @param window_title Nombre del título que tendrá la ventana.
+     */
+    private void setupForm(String window_title) {
         createUI();
-        this.setTitle("Agregar nuevo empleado");
+        this.setTitle(window_title);
         this.setScene(scene);
         this.show();
     }
