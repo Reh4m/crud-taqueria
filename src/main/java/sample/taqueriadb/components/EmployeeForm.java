@@ -15,7 +15,6 @@ import sample.taqueriadb.models.EmployeeDAO;
 import sample.taqueriadb.views.EmployeesList;
 
 import java.sql.SQLException;
-import java.sql.SQLOutput;
 
 /**
  * Ventana que muestra un formulario para agregar o modificar un empleado a la base de datos.
@@ -37,6 +36,12 @@ public class EmployeeForm extends Stage {
     Employee old_employee;
 
     /**
+     * Indica la forma en que se usará el formulario. Si es verdadero quiere decir que se agregará un nuevo empleado.
+     * Si el valor es falso entonces quiere decir que se modificará un empleado.
+     */
+    private final boolean is_new_employee;
+
+    /**
      * Crea una instancia para agregar un nuevo Empleado.
      *
      * @param employees_list Referencia a la instancia de la clase EmployeesList para llamar a sus métodos internos
@@ -45,6 +50,9 @@ public class EmployeeForm extends Stage {
     public EmployeeForm(EmployeesList employees_list) {
         // Instancia de la clase EmployeesList para actualizar la lista de empleados.
         this.employees_list = employees_list;
+
+        // Indica que se agregará un nuevo empleado.
+        is_new_employee = true;
 
         setupForm("Agregar nuevo empleado");
     }
@@ -62,6 +70,9 @@ public class EmployeeForm extends Stage {
         this.employees_list = employees_list;
         // Instancia del usuario Empleado para recuperar los atributos a actualizar.
         this.old_employee = old_employee;
+
+        // Indica que se modificará un empleado.
+        is_new_employee = false;
 
         // Se crean los campos de textos antes de rellenarlos con los datos del Empleado.
         setupForm("Editar Empleado");
@@ -146,8 +157,20 @@ public class EmployeeForm extends Stage {
         // Botón para agregar o actualizar un Empleado.
         Button btn_add_employee = new Button("Agregar");
         btn_add_employee.setMaxWidth(Double.MAX_VALUE);
-        btn_add_employee.setOnAction(actionEvent -> updateEmployee());
+        btn_add_employee.setOnAction(actionEvent -> onAddButtonClicked());
         grid_pane_form.add(btn_add_employee, 0, 5, 2, 1);
+    }
+
+    /**
+     * Indica al botón 'Agregar' qué acción realizar al momento de presionar el botón, esto dependiendo del uso que se
+     * le esté dando al formulario.
+     */
+    private void onAddButtonClicked() {
+       if (is_new_employee) {
+           addNewEmployee();
+       } else {
+           updateEmployee();
+       }
     }
 
     /**
