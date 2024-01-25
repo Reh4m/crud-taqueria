@@ -15,6 +15,7 @@ import sample.taqueriadb.models.EmployeeDAO;
 import sample.taqueriadb.views.EmployeesList;
 
 import java.sql.SQLException;
+import java.sql.SQLOutput;
 
 /**
  * Ventana que muestra un formulario para agregar o modificar un empleado a la base de datos.
@@ -57,6 +58,8 @@ public class EmployeeForm extends Stage {
      * @param old_employee objeto tipo Employee con los datos del empleado a modificar.
      */
     public EmployeeForm(EmployeesList employees_list, Employee old_employee) {
+        // Instancia de la clase EmployeesList para actualizar la lista de empleados.
+        this.employees_list = employees_list;
         // Instancia del usuario Empleado para recuperar los atributos a actualizar.
         this.old_employee = old_employee;
 
@@ -143,7 +146,7 @@ public class EmployeeForm extends Stage {
         // Botón para agregar o actualizar un Empleado.
         Button btn_add_employee = new Button("Agregar");
         btn_add_employee.setMaxWidth(Double.MAX_VALUE);
-        btn_add_employee.setOnAction(actionEvent -> addNewEmployee());
+        btn_add_employee.setOnAction(actionEvent -> updateEmployee());
         grid_pane_form.add(btn_add_employee, 0, 5, 2, 1);
     }
 
@@ -162,8 +165,9 @@ public class EmployeeForm extends Stage {
     }
 
     /**
-     * Crea un objeto de tipo Employee con los datos registrados en el formulario y lo inserta en la base de datos.
-     * Por último, se actualiza la tabla de empleados para mostrar al nuevo empleado agregado.
+     * Agrega un nuevo Empleado a la base de datos. Crea un objeto de tipo Employee con los datos registrados en el
+     * formulario y lo inserta en la base de datos. Por último, se actualiza la tabla de empleados para mostrar al
+     * nuevo empleado agregado.
      */
     private void addNewEmployee() {
         // Se obtienen los datos ingresados en el formulario.
@@ -171,6 +175,30 @@ public class EmployeeForm extends Stage {
 
         try {
             int rows_affected = EmployeeDAO.add(new_employee);
+
+            employees_list.refreshTable();
+
+            System.out.println("Filas afectadas: " + rows_affected);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            // Una vez terminado el proceso se cierra la ventana.
+            this.close();
+        }
+    }
+
+    /**
+     * Modifica un Empleado existente en la base de datos. Obtiene los datos ingresados en el formulario y actualiza
+     * los datos del Empleado (UPDATE). Por último, se actualiza la tabla de Empleados y se cierra la ventana.
+     */
+    private void updateEmployee() {
+        // Se obtienen los datos ingresados en el formulario.
+        Employee new_employee = getEmployeeData();
+
+        new_employee.setId(old_employee.getId());
+
+        try {
+            int rows_affected = EmployeeDAO.update(new_employee);
 
             employees_list.refreshTable();
 
