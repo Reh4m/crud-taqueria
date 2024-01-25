@@ -19,7 +19,7 @@ import java.sql.SQLException;
 /**
  * Ventana que muestra un formulario para agregar o modificar un empleado a la base de datos.
  */
-public class NewEmployeeForm extends Stage {
+public class EmployeeForm extends Stage {
     private Scene scene;
     // Cuadrícula para ordenar los elementos del formulario.
     private GridPane grid_pane_form;
@@ -41,7 +41,7 @@ public class NewEmployeeForm extends Stage {
      * @param employees_list Referencia a la instancia de la clase EmployeesList para llamar a sus métodos internos
      *                       e interactuar con la tabla de Empleados.
      */
-    public NewEmployeeForm(EmployeesList employees_list) {
+    public EmployeeForm(EmployeesList employees_list) {
         // Instancia de la clase EmployeesList para actualizar la lista de empleados.
         this.employees_list = employees_list;
 
@@ -56,7 +56,7 @@ public class NewEmployeeForm extends Stage {
      *                       e interactuar con la tabla de Empleados.
      * @param old_employee objeto tipo Employee con los datos del empleado a modificar.
      */
-    public NewEmployeeForm(EmployeesList employees_list, Employee old_employee) {
+    public EmployeeForm(EmployeesList employees_list, Employee old_employee) {
         // Instancia del usuario Empleado para recuperar los atributos a actualizar.
         this.old_employee = old_employee;
 
