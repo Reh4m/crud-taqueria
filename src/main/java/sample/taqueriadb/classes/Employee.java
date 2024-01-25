@@ -3,11 +3,11 @@ package sample.taqueriadb.classes;
 import java.util.Objects;
 
 public class Employee {
-    public int id;
-    public String name;
-    public String last_name;
-    public String phone_number;
-    public String email;
+    private int id;
+    private String name;
+    private String last_name;
+    private String phone_number;
+    private String email;
 
     Employee() {}
 
