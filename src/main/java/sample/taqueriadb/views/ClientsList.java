@@ -7,13 +7,14 @@ import javafx.collections.ObservableList;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.VBox;
-import sample.taqueriadb.components.NewClientForm;
+import sample.taqueriadb.classes.Employee;
+import sample.taqueriadb.components.ClientForm;
+import sample.taqueriadb.components.EmployeeForm;
 import sample.taqueriadb.models.ClientDAO;
 import sample.taqueriadb.classes.Client;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -46,7 +47,7 @@ public class ClientsList extends Stage {
         // Abre una ventana con un formulario para agregar un nuevo cliente.
         Button btn_add_client = new Button("Agregar cliente");
         btn_add_client.setMaxWidth(Double.MAX_VALUE);
-        btn_add_client.setOnAction(actionEvent -> new NewClientForm(this));
+        btn_add_client.setOnAction(actionEvent -> new ClientForm(this));
 
         // Layout principal.
         // Contiene la tabla de clientes.
@@ -141,7 +142,7 @@ public class ClientsList extends Stage {
                 edit_button.setOnAction(actionEvent -> {
                     Client selected_record = table_view.getItems().get(this.getTableRow().getIndex());
 
-                    System.out.println(selected_record.toString());
+                    openClientForm(selected_record);
                 });
             }
 
@@ -187,5 +188,16 @@ public class ClientsList extends Stage {
         });
 
         table_view.getColumns().add(delete_column);
+    }
+
+    /**
+     * Abre el formulario ClientForm para editar un cliente existente.
+     * Este método crea una instancia de ClientForm, pasando la instancia actual de ClientList y el objeto Client del
+     * cliente a modificar.
+     *
+     * @param old_client El cliente a ser modificado.
+     */
+    private void openClientForm(Client old_client) {
+        new ClientForm(this, old_client);
     }
 }
