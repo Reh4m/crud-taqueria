@@ -19,7 +19,7 @@ import java.sql.SQLException;
 /**
  * Ventana que muestra un formulario para agregar un nuevo cliente a la base de datos.
  */
-public class NewClientForm extends Stage {
+public class ClientForm extends Stage {
     private Scene scene;
     // Cuadrícula para ordenar los elementos del formulario.
     private GridPane grid_pane_form;
@@ -29,7 +29,7 @@ public class NewClientForm extends Stage {
 
     ClientsList clients_list;
 
-    public NewClientForm(ClientsList clients_list) {
+    public ClientForm(ClientsList clients_list) {
         // Instancia de la clase ClientsList para manejar la tabla de clientes.
         this.clients_list = clients_list;
 
