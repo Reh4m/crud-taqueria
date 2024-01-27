@@ -17,7 +17,7 @@ import sample.taqueriadb.views.ClientsList;
 import java.sql.SQLException;
 
 /**
- * Ventana que muestra un formulario para agregar un nuevo cliente a la base de datos.
+ * Ventana que muestra un formulario para agregar o modificar un cliente en la base de datos.
  */
 public class ClientForm extends Stage {
     private Scene scene;
@@ -27,6 +27,7 @@ public class ClientForm extends Stage {
     // Entradas de texto.
     private TextField name_input;
 
+    // Referencia a la clase ClientsList.
     ClientsList clients_list;
 
     public ClientForm(ClientsList clients_list) {
@@ -47,7 +48,6 @@ public class ClientForm extends Stage {
         grid_pane_form.setVgap(10);
         grid_pane_form.setPadding(new Insets(25, 25, 25, 25));
 
-        // Muestra el formulario para agregar un nuevo cliente.
         showClientForm();
 
         //Layout principal.
@@ -62,7 +62,7 @@ public class ClientForm extends Stage {
     }
 
     /**
-     * Crea y despliega los elementos del formulario para recibir los datos del nuevo cliente.
+     * Despliega los elementos del formulario para recibir los datos del cliente.
      * Utiliza la clase TextField para recibir los datos por medio de entradas de texto.
      */
     private void showClientForm() {
@@ -77,7 +77,7 @@ public class ClientForm extends Stage {
         name_input = new TextField();
         grid_pane_form.add(name_input, 1, 1);
 
-        // Botón para agregar un nuevo cliente.
+        // Botón para agregar o actualizar un nuevo cliente.
         Button btn_add_client = new Button("Agregar empleado");
         btn_add_client.setMaxWidth(Double.MAX_VALUE);
         btn_add_client.setOnAction(actionEvent -> addNewClient());
