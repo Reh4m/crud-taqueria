@@ -89,13 +89,21 @@ public class EmployeesList extends Stage {
     }
 
     /**
-     * Actualiza la tabla de empleados. Su propósito es cargar nuevamente la lista de empleados después de ocurrir una
-     * acción en la base de datos, por ejemplo, después de hacer un UPDATE a dicha tabla.
+     * Actualiza la tabla de empleados en la interfaz. Su propósito es obtener nuevamente la lista de empleados y
+     * actualizar el TableView con los datos actualizados.
+     * Se llama una vez que finaliza un proceso en la base de datos.
      */
     public void refreshTable() {
+        // Obtiene la lista actualizada de empleados.
         employees = getEmployeesList();
 
+        // Establece nuevamente el contenido del TableView.
         table_view.setItems(employees);
+
+        // Actualiza el TableView para reflejar los cambios.
+        // Esto es útil en casos donde la fuente de datos subyacente ha cambiado de una forma que no es observada por
+        // el propio TableView.
+        table_view.refresh();
     }
 
     /**
