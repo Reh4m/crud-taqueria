@@ -44,10 +44,7 @@ public class ClientForm extends Stage {
         // Instancia de la clase ClientsList para manejar la tabla de clientes.
         this.clients_list = clients_list;
 
-        createUI();
-        this.setTitle("Agregar cliente");
-        this.setScene(scene);
-        this.show();
+        setupForm("Agregar nuevo cliente");
     }
 
     /**
@@ -64,12 +61,21 @@ public class ClientForm extends Stage {
         // Instancia de la clase Client para recuperar los datos a actualizar.
         this.old_client = old_client;
 
-        createUI();
+        // Se crean los campos de texto antes de rellenarlos con los datos del cliente.
+        setupForm("Editar Cliente");
 
         // Se establecen los datos del cliente en sus respectivos campos de texto.
         name_input.setText(old_client.getName());
+    }
 
-        this.setTitle("Modificar cliente");
+    /**
+     * Establece la configuración básica de la ventana.
+     *
+     * @param window_title Nombre del título que tendrá la ventana.
+     */
+    private void setupForm(String window_title) {
+        createUI();
+        this.setTitle(window_title);
         this.setScene(scene);
         this.show();
     }
