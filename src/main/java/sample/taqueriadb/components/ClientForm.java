@@ -39,6 +39,12 @@ public class ClientForm extends Stage {
     Client old_client;
 
     /**
+     * Indica la forma en que se usará el formulario. Si es verdadero quiere decir que se agregará un nuevo cliente.
+     * Si el valor es falso entonces quiere decir que se modificará un cliente.
+     */
+    private final boolean is_new_client;
+
+    /**
      * Crea una instancia para agregar un nuevo cliente.
      *
      * @param clients_list Referencia a la instancia de la clase ClientList para llamar a sus métodos internos e
@@ -47,6 +53,9 @@ public class ClientForm extends Stage {
     public ClientForm(ClientsList clients_list) {
         // Instancia de la clase ClientsList para manejar la tabla de clientes.
         this.clients_list = clients_list;
+
+        // Indica que se agregará un nuevo cliente.
+        is_new_client = true;
 
         setupForm("Agregar nuevo cliente");
     }
@@ -64,6 +73,9 @@ public class ClientForm extends Stage {
         this.clients_list = clients_list;
         // Instancia de la clase Client para recuperar los datos a actualizar.
         this.old_client = old_client;
+
+        // Indica que se modificará un cliente.
+        is_new_client = false;
 
         // Se crean los campos de texto antes de rellenarlos con los datos del cliente.
         setupForm("Editar Cliente");
@@ -124,9 +136,22 @@ public class ClientForm extends Stage {
         // Botón para agregar o actualizar un nuevo cliente.
         Button btn_add_client = new Button("Agregar empleado");
         btn_add_client.setMaxWidth(Double.MAX_VALUE);
-        btn_add_client.setOnAction(actionEvent -> addNewClient());
+        btn_add_client.setOnAction(actionEvent -> onAddButtonClicked());
         grid_pane_form.add(btn_add_client, 0, 2, 2, 1);
     }
+
+    /**
+     * Indica al botón 'Agregar' qué acción realizar al momento de presionar el botón, esto dependiendo del uso que se
+     * le esté dando al formulario.
+     */
+    private void onAddButtonClicked() {
+        if (is_new_client) {
+            addNewClient();
+        } else {
+            updateClient();
+        }
+    }
+
 
     /**
      * Obtiene el nombre del cliente escrito en el campo de texto y lo guarda en un objeto de tipo Client, para
