@@ -19,7 +19,7 @@ import java.sql.SQLException;
 import java.util.concurrent.CompletableFuture;
 
 /**
- * Ventana que muestra un formulario para agregar o modificar un empleado a la base de datos.
+ * Ventana que muestra un formulario para agregar o modificar un empleado en la base de datos.
  */
 public class EmployeeForm extends Stage {
     private Scene scene;
@@ -34,6 +34,7 @@ public class EmployeeForm extends Stage {
 
     // Referencia a la clase EmployeesList.
     EmployeesList employees_list;
+
     // Datos del empleado a modificar.
     Employee old_employee;
 
@@ -64,22 +65,22 @@ public class EmployeeForm extends Stage {
      * posteriormente actualizarlos.
      *
      * @param employees_list Referencia a la instancia de la clase EmployeesList para llamar a sus métodos internos
-     *                       e interactuar con la tabla de Empleados.
-     * @param old_employee objeto tipo Employee con los datos del empleado a modificar.
+     *                       e interactuar con la tabla de empleados.
+     * @param old_employee Objeto tipo Employee con los datos del empleado a modificar.
      */
     public EmployeeForm(EmployeesList employees_list, Employee old_employee) {
         // Instancia de la clase EmployeesList para actualizar la lista de empleados.
         this.employees_list = employees_list;
-        // Instancia del objeto Employee para recuperar los atributos a actualizar.
+        // Instancia del objeto Employee para recuperar los datos a actualizar.
         this.old_employee = old_employee;
 
         // Indica que se modificará un empleado.
         is_new_employee = false;
 
-        // Se crean los campos de textos antes de rellenarlos con los datos del empleado.
+        // Se crean los campos de texto antes de rellenarlos con los datos del empleado.
         setupForm("Editar Empleado");
 
-        // Una vez creados los campos de texto, se establecen los datos del empleado en sus respectivos campos de texto.
+        // Se establecen los datos del empleado en sus respectivos campos de texto.
         name_input.setText(old_employee.getName());
         last_name_input.setText(old_employee.getLastName());
         phone_number_input.setText(old_employee.getPhoneNumber());
