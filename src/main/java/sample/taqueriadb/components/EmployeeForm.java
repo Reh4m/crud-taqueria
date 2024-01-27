@@ -190,26 +190,39 @@ public class EmployeeForm extends Stage {
     }
 
     /**
-     * Agrega un nuevo empleado a la base de datos. Crea un objeto de tipo Employee con los datos registrados en el
-     * formulario y lo inserta en la base de datos. Por último, se actualiza la tabla de empleados para mostrar al
-     * nuevo empleado agregado.
+     * Agrega un nuevo empleado a la base de datos. Obtiene los datos ingresados en el formulario y hace un INSERT a la
+     * base de datos de manera asíncrona. Una vez terminado el proceso, se actualiza la tabla de empleados para mostrar
+     * al nuevo empleado agregado. Por último, se cierra la ventana actual.
      */
     private void addNewEmployee() {
         // Se obtienen los datos ingresados en el formulario.
         Employee new_employee = getEmployeeData();
 
-        try {
-            int rows_affected = EmployeeDAO.add(new_employee);
+        // Ejecuta el proceso de manera asíncrona. Una vez finalizada la tarea, almacena el resultado del mismo y
+        // actualiza la tabla de empleados.
+        CompletableFuture.supplyAsync(() -> {
+            try {
+                return EmployeeDAO.add(new_employee);
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        }).thenAccept(
+            // Este bloque de código se ejecuta en el hilo de la aplicación JavaFX, lo cual hace posible ejecutar
+            // operaciones en la interfaz de usuario (refreshTable, closeWindow).
+            rows_affected -> Platform.runLater(() -> {
+                // Actualiza la lista de empleados en la interfaz.
+                employees_list.refreshTable();
 
-            employees_list.refreshTable();
+                System.out.println("Filas afectadas: " + rows_affected);
 
-            System.out.println("Filas afectadas: " + rows_affected);
-        } catch (SQLException e) {
+                // Cierra la ventana actual.
+                this.close();
+            })
+        ).exceptionally(e -> {
             e.printStackTrace();
-        } finally {
-            // Una vez terminado el proceso se cierra la ventana.
-            this.close();
-        }
+
+            return null;
+        });
     }
 
     /**
@@ -243,7 +256,7 @@ public class EmployeeForm extends Stage {
 
                 System.out.println("Filas afectadas: " + rows_affected);
 
-                // Cierra la ventana actual
+                // Cierra la ventana actual.
                 this.close();
             })
         ).exceptionally(e -> {
