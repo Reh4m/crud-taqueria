@@ -106,7 +106,7 @@ public class ClientForm extends Stage {
 
         showClientForm();
 
-        //Layout principal.
+        // Layout principal.
         // Contiene únicamente el formulario.
         VBox container = new VBox();
         container.getChildren().add(grid_pane_form);
@@ -152,24 +152,40 @@ public class ClientForm extends Stage {
         }
     }
 
-
     /**
-     * Obtiene el nombre del cliente escrito en el campo de texto y lo guarda en un objeto de tipo Client, para
-     * posteriormente hacer un INSERT a la base de datos y agregar al nuevo cliente.
+     * Agrega un nuevo cliente a la base de datos. Obtiene los datos ingresados en el formulario y hace un INSERT a la
+     * base de datos de manera asíncrona. Una vez terminado el proceso, se actualiza la tabla de clientes para mostrar
+     * al nuevo cliente agregado. Por último, se cierra la ventana actual.
      */
     private void addNewClient() {
-        try {
-            int rows_affected = ClientDAO.add(new Client(name_input.getText()));
+        // Se obtienen los datos ingresados en el formulario.
+        Client new_client = new Client(name_input.getText());
 
-            clients_list.refreshTable();
+        // Ejecuta el proceso de manera asíncrona. Una vez finalizada la tarea, almacena el resultado del mismo y
+        // actualiza la tabla de clientes.
+        CompletableFuture.supplyAsync(() -> {
+            try {
+                return ClientDAO.add(new_client);
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        }).thenAccept(
+                // Este bloque de código se ejecuta en el hilo de la aplicación JavaFX, lo cual hace posible ejecutar
+                // operaciones en la interfaz de usuario (refreshTable, closeWindow).
+                rows_affected -> Platform.runLater(() -> {
+                    // Actualiza la lista de empleados en la interfaz.
+                    clients_list.refreshTable();
 
-            System.out.println(rows_affected);
-        } catch (SQLException e) {
+                    System.out.println("Filas afectadas: " + rows_affected);
+
+                    // Cierra la ventana actual.
+                    this.close();
+                })
+        ).exceptionally(e -> {
             e.printStackTrace();
-        } finally {
-            // Una vez terminado el proceso se cierra la ventana.
-            this.close();
-        }
+
+            return null;
+        });
     }
 
     /**
