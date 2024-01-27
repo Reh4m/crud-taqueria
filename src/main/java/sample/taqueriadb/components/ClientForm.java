@@ -13,6 +13,7 @@ import javafx.scene.text.Text;
 import sample.taqueriadb.classes.Client;
 import sample.taqueriadb.models.ClientDAO;
 import sample.taqueriadb.views.ClientsList;
+import sample.taqueriadb.views.EmployeesList;
 
 import java.sql.SQLException;
 
@@ -30,12 +31,45 @@ public class ClientForm extends Stage {
     // Referencia a la clase ClientsList.
     ClientsList clients_list;
 
+    // Datos del cliente a modificar
+    Client old_client;
+
+    /**
+     * Crea una instancia para agregar un nuevo cliente.
+     *
+     * @param clients_list Referencia a la instancia de la clase ClientList para llamar a sus métodos internos e
+     *                     interactuar con la tabla de clientes.
+     */
     public ClientForm(ClientsList clients_list) {
         // Instancia de la clase ClientsList para manejar la tabla de clientes.
         this.clients_list = clients_list;
 
         createUI();
         this.setTitle("Agregar cliente");
+        this.setScene(scene);
+        this.show();
+    }
+
+    /**
+     * Constructor secundario, encargado de recuperar los datos de un cliente en el caso de modificar sus atributos y
+     * posteriormente actualizarlos.
+     *
+     * @param clients_list Referencia a la instancia de la clase ClientList para llamar a sus métodos internos e
+     *                     interactuar con la tabla de clientes.
+     * @param old_client Objeto tipo Client con los datos del cliente a modificar.
+     */
+    public ClientForm(ClientsList clients_list, Client old_client) {
+        // Instancia de la clase ClientList para actualizar la lista de clientes.
+        this.clients_list = clients_list;
+        // Instancia de la clase Client para recuperar los datos a actualizar.
+        this.old_client = old_client;
+
+        createUI();
+
+        // Se establecen los datos del cliente en sus respectivos campos de texto.
+        name_input.setText(old_client.getName());
+
+        this.setTitle("Modificar cliente");
         this.setScene(scene);
         this.show();
     }
