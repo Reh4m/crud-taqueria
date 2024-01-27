@@ -1,5 +1,6 @@
 package sample.taqueriadb.components;
 
+import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -15,6 +16,7 @@ import sample.taqueriadb.models.EmployeeDAO;
 import sample.taqueriadb.views.EmployeesList;
 
 import java.sql.SQLException;
+import java.util.concurrent.CompletableFuture;
 
 /**
  * Ventana que muestra un formulario para agregar o modificar un empleado a la base de datos.
@@ -212,7 +214,8 @@ public class EmployeeForm extends Stage {
 
     /**
      * Modifica un empleado existente en la base de datos. Obtiene los datos ingresados en el formulario y actualiza
-     * los datos del empleado (UPDATE). Por último, se actualiza la tabla de Empleados y se cierra la ventana.
+     * los datos del empleado (UPDATE) de manera asíncrona. Después de ejecutar el proceso, se actualiza la tabla de
+     * empleados y se cierra la ventana.
      */
     private void updateEmployee() {
         // Se obtienen los datos ingresados en el formulario.
@@ -223,17 +226,30 @@ public class EmployeeForm extends Stage {
         // El ID se utiliza dentro del query para saber qué empleado se va a actualizar.
         new_employee.setId(old_employee.getId());
 
-        try {
-            int rows_affected = EmployeeDAO.update(new_employee);
+        // Ejecuta el proceso de manera asíncrona. Una vez finalizada la tarea, almacena el resultado del mismo y
+        // actualiza la tabla de empleados.
+        CompletableFuture.supplyAsync(() -> {
+            try {
+                return EmployeeDAO.update(new_employee);
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        }).thenAccept(
+            // Este bloque de código se ejecuta en el hilo de la aplicación JavaFX, lo cual hace posible ejecutar
+            // operaciones en la interfaz de usuario (refreshTable, closeWindow).
+            rows_affected -> Platform.runLater(() -> {
+                // Actualiza la lista de empleados en la interfaz.
+                employees_list.refreshTable();
 
-            employees_list.refreshTable();
+                System.out.println("Filas afectadas: " + rows_affected);
 
-            System.out.println("Filas afectadas: " + rows_affected);
-        } catch (SQLException e) {
+                // Cierra la ventana actual
+                this.close();
+            })
+        ).exceptionally(e -> {
             e.printStackTrace();
-        } finally {
-            // Una vez terminado el proceso se cierra la ventana.
-            this.close();
-        }
+
+            return null;
+        });
     }
 }
