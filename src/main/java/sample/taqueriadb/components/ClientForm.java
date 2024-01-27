@@ -12,11 +12,8 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.scene.text.Text;
 import sample.taqueriadb.classes.Client;
-import sample.taqueriadb.classes.Employee;
 import sample.taqueriadb.models.ClientDAO;
-import sample.taqueriadb.models.EmployeeDAO;
 import sample.taqueriadb.views.ClientsList;
-import sample.taqueriadb.views.EmployeesList;
 
 import java.sql.SQLException;
 import java.util.concurrent.CompletableFuture;
@@ -123,7 +120,7 @@ public class ClientForm extends Stage {
      */
     private void showClientForm() {
         // Título.
-        Text title = new Text("Ingresa el nombre del nuevo cliente");
+        Text title = new Text("Ingresa los datos del cliente");
         grid_pane_form.add(title, 0, 0, 2, 1);
 
         // Nombre.
@@ -134,7 +131,7 @@ public class ClientForm extends Stage {
         grid_pane_form.add(name_input, 1, 1);
 
         // Botón para agregar o actualizar un nuevo cliente.
-        Button btn_add_client = new Button("Agregar empleado");
+        Button btn_add_client = new Button("Agregar");
         btn_add_client.setMaxWidth(Double.MAX_VALUE);
         btn_add_client.setOnAction(actionEvent -> onAddButtonClicked());
         grid_pane_form.add(btn_add_client, 0, 2, 2, 1);
