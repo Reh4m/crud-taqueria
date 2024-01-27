@@ -7,9 +7,7 @@ import javafx.collections.ObservableList;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.VBox;
-import sample.taqueriadb.classes.Employee;
 import sample.taqueriadb.components.ClientForm;
-import sample.taqueriadb.components.EmployeeForm;
 import sample.taqueriadb.models.ClientDAO;
 import sample.taqueriadb.classes.Client;
 
@@ -82,13 +80,21 @@ public class ClientsList extends Stage {
     }
 
     /**
-     * Actualiza la tabla de clientes. Su propósito es cargar nuevamente la lista de clientes después de ocurrir una
-     * acción en la base de datos, por ejemplo, después de hacer un UPDATE a dicha tabla.
+     * Actualiza la tabla de clientes en la interfaz. Su propósito es obtener nuevamente la lista de clientes y
+     * actualizar el TableView con los datos actualizados.
+     * Se llama una vez que finaliza un proceso en la base de datos.
      */
     public void refreshTable() {
+        // Obtiene la lista actualizada de clientes.
         clients = getClientsList();
 
+        // Establece nuevamente el contenido del TableView.
         table_view.setItems(clients);
+
+        // Actualiza el TableView para reflejar los cambios.
+        // Esto es útil en casos donde la fuente de datos subyacente ha cambiado de una forma que no es observada por
+        // el propio TableView.
+        table_view.refresh();
     }
 
     /**
