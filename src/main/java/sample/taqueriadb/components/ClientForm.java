@@ -1,5 +1,6 @@
 package sample.taqueriadb.components;
 
+import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -11,11 +12,14 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.scene.text.Text;
 import sample.taqueriadb.classes.Client;
+import sample.taqueriadb.classes.Employee;
 import sample.taqueriadb.models.ClientDAO;
+import sample.taqueriadb.models.EmployeeDAO;
 import sample.taqueriadb.views.ClientsList;
 import sample.taqueriadb.views.EmployeesList;
 
 import java.sql.SQLException;
+import java.util.concurrent.CompletableFuture;
 
 /**
  * Ventana que muestra un formulario para agregar o modificar un cliente en la base de datos.
@@ -141,5 +145,46 @@ public class ClientForm extends Stage {
             // Una vez terminado el proceso se cierra la ventana.
             this.close();
         }
+    }
+
+    /**
+     * Modifica un cliente existente en la base de datos. Obtiene los datos ingresados en el formulario y actualiza
+     * los datos del cliente (UPDATE) de manera asíncrona. Después de ejecutar el proceso, se actualiza la tabla de
+     * clientes y se cierra la ventana.
+     */
+    private void updateClient() {
+        // Se obtienen los datos ingresados en el formulario.
+        Client new_client = new Client(name_input.getText());
+
+        // Establece el ID del cliente.
+        // Este se obtiene desde la lista de clientes y lo asigna al objeto del cliente modificado.
+        // El ID se utiliza dentro del query para saber qué cliente se va a actualizar.
+        new_client.setId(old_client.getId());
+
+        // Ejecuta el proceso de manera asíncrona. Una vez finalizada la tarea, almacena el resultado del mismo y
+        // actualiza la tabla de clientes.
+        CompletableFuture.supplyAsync(() -> {
+            try {
+                return ClientDAO.update(new_client);
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        }).thenAccept(
+                // Este bloque de código se ejecuta en el hilo de la aplicación JavaFX, lo cual hace posible ejecutar
+                // operaciones en la interfaz de usuario (refreshTable, closeWindow).
+                rows_affected -> Platform.runLater(() -> {
+                    // Actualiza la lista de clientes en la interfaz.
+                    clients_list.refreshTable();
+
+                    System.out.println("Filas afectadas: " + rows_affected);
+
+                    // Cierra la ventana actual.
+                    this.close();
+                })
+        ).exceptionally(e -> {
+            e.printStackTrace();
+
+            return null;
+        });
     }
 }
