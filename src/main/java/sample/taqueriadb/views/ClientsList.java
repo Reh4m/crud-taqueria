@@ -1,5 +1,6 @@
 package sample.taqueriadb.views;
 
+import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.collections.FXCollections;
@@ -10,11 +11,13 @@ import javafx.scene.layout.VBox;
 import sample.taqueriadb.components.ClientForm;
 import sample.taqueriadb.models.ClientDAO;
 import sample.taqueriadb.classes.Client;
+import sample.taqueriadb.models.EmployeeDAO;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 /**
  * Ventana que muestra la lista de clientes registrados.
@@ -190,9 +193,10 @@ public class ClientsList extends Stage {
 
             {
                 delete_button.setOnAction(actionEvent -> {
+                    // Obtiene los datos de la fila seleccionada.
                     Client selected_record = table_view.getItems().get(this.getTableRow().getIndex());
 
-                    System.out.println(selected_record.toString());
+                    deleteClient(selected_record.getId());
                 });
             }
 
@@ -207,5 +211,29 @@ public class ClientsList extends Stage {
         });
 
         table_view.getColumns().add(delete_column);
+    }
+
+    /**
+     * Elimina un cliente de la base de datos. Mediante el ID del cliente seleccionado se ejecuta de forma asíncrona un
+     * DELETE a la base de datos con la referencia del cliente. Por último la tabla de clientes se actualiza.
+     *
+     * @param id del cliente a eliminar.
+     */
+    private void deleteClient(int id) {
+        CompletableFuture.supplyAsync(() -> {
+            try {
+                return ClientDAO.delete(id);
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        }).thenAccept(rows_affected -> Platform.runLater(() -> {
+            refreshTable();
+
+            System.out.println("Filas afectadas: " + rows_affected);
+        })).exceptionally(e -> {
+            e.printStackTrace();
+
+            return null;
+        });
     }
 }
