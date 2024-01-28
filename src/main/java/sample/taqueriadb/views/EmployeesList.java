@@ -17,6 +17,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
 /**
@@ -167,8 +168,10 @@ public class EmployeesList extends Stage {
         button_column.setCellFactory(param -> new TableCell<>() {
             private final Button edit_button = new Button("Editar");
 
+            // Al momento de presionar el botón "Editar" se abre un formulario para modificar los datos del empleado.
             {
                 edit_button.setOnAction(actionEvent -> {
+                    // Obtiene los datos de la fila seleccionada.
                     Employee selected_record = table_view.getItems().get(this.getTableRow().getIndex());
 
                     openEmployeeForm(selected_record);
@@ -189,6 +192,17 @@ public class EmployeesList extends Stage {
     }
 
     /**
+     * Abre el formulario EmployeeForm para editar un empleado existente.
+     * Este método crea una instancia de EmployeeForm, pasando la instancia actual de EmployeesList y el objeto
+     * Employee del empleado a modificar.
+     *
+     * @param old_employee El empleado a ser modificado.
+     */
+    private void openEmployeeForm(Employee old_employee) {
+        new EmployeeForm(this, old_employee);
+    }
+
+    /**
      * Agrega una columna con botones "Borrar" y los despliega en cada celda existente. En otras palabras,
      * muestra un botón "Borrar" en cada fila de la tabla Empleado.
      */
@@ -198,11 +212,18 @@ public class EmployeesList extends Stage {
         delete_column.setCellFactory(param -> new TableCell<>() {
             private final Button delete_button = new Button("Borrar");
 
+            // Al momento de presionar el botón "Borrar" se abre una ventana de confirmación.
             {
                 delete_button.setOnAction(actionEvent -> {
+                    // Obtiene los datos de la fila seleccionada.
                     Employee selected_record = table_view.getItems().get(this.getTableRow().getIndex());
 
-                    deleteEmployee(selected_record.getId());
+                    // En caso de recibir una respuesta de confirmación se borra al empleado.
+                    showConfirmationDialog().ifPresent(response -> {
+                        if (response == ButtonType.OK) {
+                            deleteEmployee(selected_record.getId());
+                        }
+                    });
                 });
             }
 
@@ -245,13 +266,16 @@ public class EmployeesList extends Stage {
     }
 
     /**
-     * Abre el formulario EmployeeForm para editar un empleado existente.
-     * Este método crea una instancia de EmployeeForm, pasando la instancia actual de EmployeesList y el objeto
-     * Employee del empleado a modificar.
+     * Muestra una ventana de confirmación al momento de querer eliminar un empleado.
      *
-     * @param old_employee El empleado a ser modificado.
+     * @return Optional<ButtonType> Contiene la respuesta del usuario a la ventana de confirmación.
      */
-    private void openEmployeeForm(Employee old_employee) {
-        new EmployeeForm(this, old_employee);
+    private Optional<ButtonType> showConfirmationDialog() {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setHeaderText(null);
+        alert.setTitle("Eliminar Empleado");
+        alert.setContentText("¿Estás seguro de eliminar este empleado?");
+
+        return alert.showAndWait();
     }
 }
