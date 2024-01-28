@@ -144,8 +144,10 @@ public class ClientsList extends Stage {
         button_column.setCellFactory(param -> new TableCell<>() {
             private final Button edit_button = new Button("Editar");
 
+            // Al momento de presionar el botón "Editar" se abre un formulario para modificar los datos del cliente.
             {
                 edit_button.setOnAction(actionEvent -> {
+                    // Obtiene los datos de la fila seleccionada.
                     Client selected_record = table_view.getItems().get(this.getTableRow().getIndex());
 
                     openClientForm(selected_record);
@@ -163,6 +165,17 @@ public class ClientsList extends Stage {
         });
 
         table_view.getColumns().add(button_column);
+    }
+
+    /**
+     * Abre el formulario ClientForm para editar un cliente existente.
+     * Este método crea una instancia de ClientForm, pasando la instancia actual de ClientList y el objeto Client del
+     * cliente a modificar.
+     *
+     * @param old_client El cliente a ser modificado.
+     */
+    private void openClientForm(Client old_client) {
+        new ClientForm(this, old_client);
     }
 
     /**
@@ -194,16 +207,5 @@ public class ClientsList extends Stage {
         });
 
         table_view.getColumns().add(delete_column);
-    }
-
-    /**
-     * Abre el formulario ClientForm para editar un cliente existente.
-     * Este método crea una instancia de ClientForm, pasando la instancia actual de ClientList y el objeto Client del
-     * cliente a modificar.
-     *
-     * @param old_client El cliente a ser modificado.
-     */
-    private void openClientForm(Client old_client) {
-        new ClientForm(this, old_client);
     }
 }
