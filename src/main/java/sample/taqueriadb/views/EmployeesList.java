@@ -1,5 +1,6 @@
 package sample.taqueriadb.views;
 
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
@@ -16,6 +17,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 /**
  * Ventana que muestra la lista de empleados registrados.
@@ -200,7 +202,7 @@ public class EmployeesList extends Stage {
                 delete_button.setOnAction(actionEvent -> {
                     Employee selected_record = table_view.getItems().get(this.getTableRow().getIndex());
 
-                    System.out.println(selected_record.toString());
+                    deleteEmployee(selected_record.getId());
                 });
             }
 
@@ -215,6 +217,31 @@ public class EmployeesList extends Stage {
         });
 
         table_view.getColumns().add(delete_column);
+    }
+
+    /**
+     * Elimina un empleado de la base de datos. Mediante el ID del empleado seleccionado se ejecuta de forma
+     * asíncrona un DELETE a la base de datos con la referencia del empleado. Por último la tabla de empleados se
+     * actualiza.
+     *
+     * @param id del empleado a eliminar.
+     */
+    private void deleteEmployee(int id) {
+        CompletableFuture.supplyAsync(() -> {
+            try {
+                return EmployeeDAO.delete(id);
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        }).thenAccept(rows_affected -> Platform.runLater(() -> {
+            refreshTable();
+
+            System.out.println("Filas afectadas: " + rows_affected);
+        })).exceptionally(e -> {
+            e.printStackTrace();
+
+            return null;
+        });
     }
 
     /**
