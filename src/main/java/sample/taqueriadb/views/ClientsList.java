@@ -17,6 +17,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
 /**
@@ -191,12 +192,17 @@ public class ClientsList extends Stage {
         delete_column.setCellFactory(param -> new TableCell<>() {
             private final Button delete_button = new Button("Borrar");
 
+            // Al momento de presionar el botón "Borrar" se abre una ventana para confirmar la acción.
             {
                 delete_button.setOnAction(actionEvent -> {
                     // Obtiene los datos de la fila seleccionada.
                     Client selected_record = table_view.getItems().get(this.getTableRow().getIndex());
 
-                    deleteClient(selected_record.getId());
+                    showConfirmationDialog().ifPresent(response -> {
+                        if (response == ButtonType.OK) {
+                            deleteClient(selected_record.getId());
+                        }
+                    });
                 });
             }
 
@@ -235,5 +241,19 @@ public class ClientsList extends Stage {
 
             return null;
         });
+    }
+
+    /**
+     * Muestra una ventana de confirmación al momento de querer eliminar un cliente.
+     *
+     * @return Optional<ButtonType> Contiene la respuesta del usuario a la ventana de confirmación.
+     */
+    private Optional<ButtonType> showConfirmationDialog() {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setHeaderText(null);
+        alert.setTitle("Eliminar Cliente");
+        alert.setContentText("¿Estás seguro de eliminar este cliente?");
+
+        return alert.showAndWait();
     }
 }
