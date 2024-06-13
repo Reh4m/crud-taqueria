@@ -9,7 +9,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.VBox;
 import sample.taqueriadb.components.ClientForm;
-import sample.taqueriadb.models.ClientDAO;
+import sample.taqueriadb.dao.ClientDAO;
 import sample.taqueriadb.model.Client;
 
 import java.sql.ResultSet;

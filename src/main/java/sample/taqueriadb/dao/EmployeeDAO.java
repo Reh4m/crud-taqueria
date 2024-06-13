@@ -1,4 +1,4 @@
-package sample.taqueriadb.models;
+package sample.taqueriadb.dao;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

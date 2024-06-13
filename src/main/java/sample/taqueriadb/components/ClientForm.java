@@ -12,7 +12,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.scene.text.Text;
 import sample.taqueriadb.model.Client;
-import sample.taqueriadb.models.ClientDAO;
+import sample.taqueriadb.dao.ClientDAO;
 import sample.taqueriadb.views.ClientsList;
 
 import java.sql.SQLException;

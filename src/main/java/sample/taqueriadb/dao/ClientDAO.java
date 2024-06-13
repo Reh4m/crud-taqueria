@@ -1,4 +1,4 @@
-package sample.taqueriadb.models;
+package sample.taqueriadb.dao;
 
 import sample.taqueriadb.model.Client;
 import sample.taqueriadb.utils.SQLCommandExecutor;

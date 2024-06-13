@@ -6,7 +6,7 @@ import javafx.collections.ObservableList;
 import javafx.scene.control.*;
 import sample.taqueriadb.model.Employee;
 import sample.taqueriadb.components.EmployeeForm;
-import sample.taqueriadb.models.EmployeeDAO;
+import sample.taqueriadb.dao.EmployeeDAO;
 import sample.taqueriadb.utils.UsersList;
 
 import java.sql.ResultSet;
