@@ -1,4 +1,4 @@
-package sample.taqueriadb.views;
+package sample.taqueriadb.ui;
 
 import javafx.application.Platform;
 import javafx.scene.Scene;

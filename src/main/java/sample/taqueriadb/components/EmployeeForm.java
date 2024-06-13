@@ -13,7 +13,7 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import sample.taqueriadb.model.Employee;
 import sample.taqueriadb.dao.EmployeeDAO;
-import sample.taqueriadb.views.EmployeesList;
+import sample.taqueriadb.ui.EmployeesList;
 
 import java.sql.SQLException;
 import java.util.concurrent.CompletableFuture;
