@@ -1,4 +1,4 @@
-package sample.taqueriadb.components;
+package sample.taqueriadb.ui.employee;
 
 import javafx.application.Platform;
 import javafx.geometry.Insets;
@@ -13,7 +13,6 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import sample.taqueriadb.model.Employee;
 import sample.taqueriadb.dao.EmployeeDAO;
-import sample.taqueriadb.ui.employee.EmployeesList;
 
 import java.sql.SQLException;
 import java.util.concurrent.CompletableFuture;
