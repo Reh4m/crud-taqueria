@@ -1,4 +1,4 @@
-package sample.taqueriadb.ui;
+package sample.taqueriadb.ui.employee;
 
 import javafx.application.Platform;
 import javafx.collections.FXCollections;

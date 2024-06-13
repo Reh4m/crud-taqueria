@@ -6,8 +6,8 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import java.io.IOException;
 
-import sample.taqueriadb.ui.ClientsList;
-import sample.taqueriadb.ui.EmployeesList;
+import sample.taqueriadb.ui.client.ClientsList;
+import sample.taqueriadb.ui.employee.EmployeesList;
 import sample.taqueriadb.db.DatabaseConnector;
 
 public class Main extends Application {
