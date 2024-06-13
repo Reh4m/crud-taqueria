@@ -1,4 +1,4 @@
-package sample.taqueriadb.utils;
+package sample.taqueriadb.base;
 
 import javafx.collections.ObservableList;
 import javafx.scene.control.*;
