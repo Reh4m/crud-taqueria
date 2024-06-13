@@ -2,12 +2,13 @@ package sample.taqueriadb.utils;
 
 import sample.taqueriadb.db.DatabaseConnector;
 
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-// Proporciona una utilidad para ejecutar comandos DDL y DML en la base de datos.
+/**
+ * Proporciona una utilidad para ejecutar comandos DDL y DML en la base de datos.
+ */
 public class SQLCommandExecutor {
     private static ResultSet result_set;
     private static int rows_affected;
