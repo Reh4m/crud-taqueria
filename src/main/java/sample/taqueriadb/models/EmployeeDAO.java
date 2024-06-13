@@ -3,7 +3,7 @@ package sample.taqueriadb.models;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import sample.taqueriadb.classes.Employee;
+import sample.taqueriadb.model.Employee;
 import sample.taqueriadb.utils.SQLCommandExecutor;
 
 /**

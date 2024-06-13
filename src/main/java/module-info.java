@@ -6,6 +6,6 @@ module sample.taqueriadb {
 
 
     opens sample.taqueriadb to javafx.fxml;
-    opens sample.taqueriadb.classes;
+    opens sample.taqueriadb.model;
     exports sample.taqueriadb;
 }

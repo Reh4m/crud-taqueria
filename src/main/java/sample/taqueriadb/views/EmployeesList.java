@@ -4,7 +4,7 @@ import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.*;
-import sample.taqueriadb.classes.Employee;
+import sample.taqueriadb.model.Employee;
 import sample.taqueriadb.components.EmployeeForm;
 import sample.taqueriadb.models.EmployeeDAO;
 import sample.taqueriadb.utils.UsersList;

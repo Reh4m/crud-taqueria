@@ -11,7 +11,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import sample.taqueriadb.classes.Employee;
+import sample.taqueriadb.model.Employee;
 import sample.taqueriadb.models.EmployeeDAO;
 import sample.taqueriadb.views.EmployeesList;
 

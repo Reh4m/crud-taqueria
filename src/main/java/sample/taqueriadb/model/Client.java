@@ -1,4 +1,4 @@
-package sample.taqueriadb.classes;
+package sample.taqueriadb.model;
 
 import java.util.Objects;
 

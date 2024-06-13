@@ -10,8 +10,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.VBox;
 import sample.taqueriadb.components.ClientForm;
 import sample.taqueriadb.models.ClientDAO;
-import sample.taqueriadb.classes.Client;
-import sample.taqueriadb.models.EmployeeDAO;
+import sample.taqueriadb.model.Client;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

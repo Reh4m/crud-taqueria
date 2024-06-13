@@ -1,6 +1,6 @@
 package sample.taqueriadb.models;
 
-import sample.taqueriadb.classes.Client;
+import sample.taqueriadb.model.Client;
 import sample.taqueriadb.utils.SQLCommandExecutor;
 
 import java.sql.ResultSet;
