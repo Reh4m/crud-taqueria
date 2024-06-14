@@ -1,6 +1,5 @@
 package sample.taqueriadb.db;
 
-import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.sql.Connection;
@@ -10,7 +9,9 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Properties;
 
-// Proporciona una utilidad para conectarse a la base de datos.
+/**
+ * Proporciona una utilidad para conectarse a la base de datos.
+ */
 public class DatabaseConnector {
     // Variables de entorno para la conexión a la base de datos.
     private static final Properties properties = new Properties();
