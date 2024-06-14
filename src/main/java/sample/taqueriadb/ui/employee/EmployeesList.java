@@ -54,7 +54,7 @@ public class EmployeesList extends UsersList<Employee> {
      */
     @Override
     protected void showUsersList() {
-        // Guarda los de empleados recuperados desde la base de datos.
+        // Guarda los empleados recuperados desde la base de datos.
         users = getUsers();
 
         TableColumn<Employee, String> id_column = createColumn("ID", "id");
@@ -204,12 +204,12 @@ public class EmployeesList extends UsersList<Employee> {
      */
     @Override
     protected Button addNewUserButton() {
-        Button btn_add_client = new Button("Agregar empleado");
-        btn_add_client.setMaxWidth(Double.MAX_VALUE);
+        Button btn_add_employee = new Button("Agregar empleado");
+        btn_add_employee.setMaxWidth(Double.MAX_VALUE);
         // Establece la acción que se ejecutará cuando se dé clic en el botón.
         // En este caso, abre el formulario del empleado.
-        btn_add_client.setOnAction(actionEvent -> new EmployeeForm(this));
+        btn_add_employee.setOnAction(actionEvent -> new EmployeeForm(this));
 
-        return btn_add_client;
+        return btn_add_employee;
     }
 }
