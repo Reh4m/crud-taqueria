@@ -76,32 +76,22 @@ public class ClientsList extends UsersList<Client> {
      */
     @Override
     protected void addEditButtonColumn() {
-        TableColumn<Client, Void> button_column = new TableColumn<>();
+        TableColumn<Client, Void> edit_column = new TableColumn<>();
 
-        button_column.setCellFactory(param -> new TableCell<>() {
-            private final Button edit_button = new Button("Editar");
+        // Establece el elemento que contendrá cada una de las celdas de la columna.
+        // En este caso, cada celda de la columna será un objeto de la clase ActionButtonTableCell.
+        edit_column.setCellFactory(param -> {
+            ActionButtonTableCell<Client> edit_button = new ActionButtonTableCell<>("Editar");
+            // Establece la acción a realizar cuando se pulse el botón.
+            // La función openEditForm toma como argumento el objeto Client de la fila seleccionada.
+            edit_button.setButtonAction(event -> openEditForm(edit_button.getCurrentItem()));
 
-            // Al momento de presionar el botón "Editar" se abre un formulario para modificar los datos del cliente.
-            {
-                edit_button.setOnAction(actionEvent -> {
-                    // Obtiene los datos de la fila seleccionada.
-                    Client selected_record = table_view.getItems().get(this.getTableRow().getIndex());
-
-                    openEditForm(selected_record);
-                });
-            }
-
-            // Se encarga de desplegar el botón "Editar". En este caso, si la celda no está vacía, el edit_button se
-            // establece como el gráfico de la celda.
-            @Override
-            protected void updateItem(Void item, boolean empty) {
-                super.updateItem(item, empty);
-
-                if (!empty) setGraphic(edit_button);
-            }
+            // Retorna el botón a ser desplegado en la celda.
+            return edit_button;
         });
 
-        table_view.getColumns().add(button_column);
+        // Agrega la columna "Editar" a la tabla.
+        table_view.getColumns().add(edit_column);
     }
 
     /**
@@ -132,7 +122,7 @@ public class ClientsList extends UsersList<Client> {
             // La función deleteClientAction toma como argumento el objeto Client de la fila seleccionada.
             delete_button.setButtonAction(event -> deleteClientAction(delete_button.getCurrentItem()));
 
-            // Retorna el botón para ser desplegado en la celda.
+            // Retorna el botón a ser desplegado en la celda.
             return delete_button;
         });
 
@@ -142,7 +132,7 @@ public class ClientsList extends UsersList<Client> {
 
     /**
      * Implementa una ventana de confirmación previo a la eliminación de un cliente.
-     * La ventana despliega los botones "Aceptar" y "Cancelar". Al presionar en "aceptar", se elimina al cliente.
+     * La ventana despliega los botones "Aceptar" y "Cancelar". Al presionar en "Aceptar", se elimina al cliente.
      *
      * @param client Datos del cliente a ser eliminado.
      */
