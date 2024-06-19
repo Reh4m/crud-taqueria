@@ -59,6 +59,12 @@ public abstract class UsersList<T> extends Stage {
 
     protected abstract void addEditButtonColumn();
 
+    protected abstract void openEditForm(T old_item);
+
+    protected abstract void addDeleteButtonColumn();
+
+    protected abstract Button addNewUserButton();
+
     /**
      * Reduce el código necesario para crear una columna en la tabla.
      *
@@ -74,11 +80,7 @@ public abstract class UsersList<T> extends Stage {
         return column;
     }
 
-    protected abstract void openEditForm(T old_item);
-
-    protected abstract void addDeleteButtonColumn();
-
-    protected abstract Button addNewUserButton();
+//    protected void createActionButtonColumn() {}
 
     /**
      * Actualiza la tabla de empleados en la interfaz. Su propósito es obtener nuevamente la lista de empleados y
@@ -100,6 +102,8 @@ public abstract class UsersList<T> extends Stage {
     /**
      * Muestra una ventana de confirmación al eliminar un usuario.
      *
+     * @param title Título de la ventana.
+     * @param message Mensaje de confirmación.
      * @return Optional<ButtonType> Contiene la respuesta del usuario a la ventana de confirmación.
      */
     protected Optional<ButtonType> showConfirmationDialog(String title, String message) {
