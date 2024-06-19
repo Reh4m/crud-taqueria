@@ -7,6 +7,7 @@ import javafx.scene.control.*;
 import sample.taqueriadb.model.Employee;
 import sample.taqueriadb.dao.EmployeeDAO;
 import sample.taqueriadb.base.UsersList;
+import sample.taqueriadb.utils.ActionButtonTableCell;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -90,32 +91,22 @@ public class EmployeesList extends UsersList<Employee> {
      */
     @Override
     protected void addEditButtonColumn() {
-        TableColumn<Employee, Void> button_column = new TableColumn<>();
+        TableColumn<Employee, Void> edit_column = new TableColumn<>();
 
-        button_column.setCellFactory(param -> new TableCell<>() {
-            private final Button edit_button = new Button("Editar");
+        // Establece el elemento que contendrá cada una de las celdas de la columna.
+        // En este caso, cada celda de la columna será un objeto de la clase ActionButtonTableCell.
+        edit_column.setCellFactory(param -> {
+            ActionButtonTableCell<Employee> edit_button = new ActionButtonTableCell<>("Editar");
+            // Establece la acción a realizar cuando se pulse el botón.
+            // La función openEditForm toma como argumento el objeto Employee de la fila seleccionada.
+            edit_button.setButtonAction(event -> openEditForm(edit_button.getCurrentItem()));
 
-            // Al momento de presionar el botón "Editar" se abre un formulario para modificar los datos del empleado.
-            {
-                edit_button.setOnAction(actionEvent -> {
-                    // Obtiene los datos de la fila seleccionada.
-                    Employee selected_record = table_view.getItems().get(this.getTableRow().getIndex());
-
-                    openEditForm(selected_record);
-                });
-            }
-
-            // Se encarga de desplegar el botón "Editar". En este caso, si la celda no está vacía, el edit_button se
-            // establece como el gráfico de la celda.
-            @Override
-            protected void updateItem(Void item, boolean empty) {
-                super.updateItem(item, empty);
-
-                if (!empty) setGraphic(edit_button);
-            }
+            // Retorna el botón a ser desplegado en la celda.
+            return edit_button;
         });
 
-        table_view.getColumns().add(button_column);
+        // Agrega la columna "Editar" a la tabla.
+        table_view.getColumns().add(edit_column);
     }
 
     /**
@@ -138,38 +129,37 @@ public class EmployeesList extends UsersList<Employee> {
     protected void addDeleteButtonColumn() {
         TableColumn<Employee, Void> delete_column = new TableColumn<>();
 
-        delete_column.setCellFactory(param -> new TableCell<>() {
-            private final Button delete_button = new Button("Borrar");
+        // Establece el elemento que contendrá cada una de las celdas de la columna.
+        // En este caso, cada celda de la columna será un objeto de la clase ActionButtonTableCell.
+        delete_column.setCellFactory(param -> {
+            ActionButtonTableCell<Employee> delete_button = new ActionButtonTableCell<>("Borrar");
+            // Establece la acción a realizar cuando se pulse el botón.
+            // La función deleteClientAction toma como argumento el objeto Employee de la fila seleccionada.
+            delete_button.setButtonAction(event -> deleteEmployeeAction(delete_button.getCurrentItem()));
 
-            // Al momento de presionar el botón "Borrar" se abre una ventana para confirmar la acción.
-            {
-                delete_button.setOnAction(actionEvent -> {
-                    // Obtiene los datos de la fila seleccionada.
-                    Employee selected_record = table_view.getItems().get(this.getTableRow().getIndex());
-
-                    // En caso de recibir una respuesta de confirmación se borra al empleado.
-                    showConfirmationDialog(
-                        "Eliminar Empleado",
-                        "¿Estás seguro de eliminar este empleado?"
-                    ).ifPresent(response -> {
-                        if (response == ButtonType.OK) {
-                            deleteEmployee(selected_record.getId());
-                        }
-                    });
-                });
-            }
-
-            // Se encarga de desplegar el botón "Borrar". En este caso, si la celda no está vacía, el delete_button se
-            // establece como el gráfico de la celda.
-            @Override
-            protected void updateItem(Void item, boolean empty) {
-                super.updateItem(item, empty);
-
-                if (!empty) setGraphic(delete_button);
-            }
+            // Retorna el botón a ser desplegado en la celda.
+            return delete_button;
         });
 
+        // Agrega la columna "Borrar" a la tabla.
         table_view.getColumns().add(delete_column);
+    }
+
+    /**
+     * Implementa una ventana de confirmación previo a la eliminación de un empleado.
+     * La ventana despliega los botones "Aceptar" y "Cancelar". Al presionar en "Aceptar", se elimina al empleado.
+     *
+     * @param employee Datos del empleado a ser eliminado.
+     */
+    private void deleteEmployeeAction(Employee employee) {
+        showConfirmationDialog(
+                "Eliminar empleado",
+                "¿Estás seguro de eliminar este empleado?"
+        ).ifPresent(response -> {
+            if (response == ButtonType.OK) {
+                deleteEmployee(employee.getId());
+            }
+        });
     }
 
     /**
