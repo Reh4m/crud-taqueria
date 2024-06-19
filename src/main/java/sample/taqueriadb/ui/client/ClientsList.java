@@ -124,16 +124,28 @@ public class ClientsList extends UsersList<Client> {
     protected void addDeleteButtonColumn() {
         TableColumn<Client, Void> delete_column = new TableColumn<>();
 
+        // Establece el elemento que contendrá cada una de las celdas de la columna.
+        // En este caso, cada celda de la columna será un objeto de la clase ActionButtonTableCell.
         delete_column.setCellFactory(param -> {
             ActionButtonTableCell<Client> delete_button = new ActionButtonTableCell<>("Borrar");
+            // Establece la acción a realizar cuando se pulse el botón.
+            // La función deleteClientAction toma como argumento el objeto Client de la fila seleccionada.
             delete_button.setButtonAction(event -> deleteClientAction(delete_button.getCurrentItem()));
 
+            // Retorna el botón para ser desplegado en la celda.
             return delete_button;
         });
 
+        // Agrega la columna "Borrar" a la tabla.
         table_view.getColumns().add(delete_column);
     }
 
+    /**
+     * Implementa una ventana de confirmación previo a la eliminación de un cliente.
+     * La ventana despliega los botones "Aceptar" y "Cancelar". Al presionar en "aceptar", se elimina al cliente.
+     *
+     * @param client Datos del cliente a ser eliminado.
+     */
     private void deleteClientAction(Client client) {
         showConfirmationDialog(
             "Eliminar cliente",
