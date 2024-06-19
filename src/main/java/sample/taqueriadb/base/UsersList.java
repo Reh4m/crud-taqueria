@@ -62,8 +62,6 @@ public abstract class UsersList<T> extends Stage {
 
     protected abstract void addEditButtonColumn();
 
-    protected abstract void openEditForm(T old_item);
-
     protected abstract void addDeleteButtonColumn();
 
     protected abstract Button addNewUserButton();
