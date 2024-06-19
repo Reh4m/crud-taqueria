@@ -7,7 +7,6 @@ import javafx.scene.control.*;
 import sample.taqueriadb.base.UsersList;
 import sample.taqueriadb.dao.ClientDAO;
 import sample.taqueriadb.model.Client;
-import sample.taqueriadb.utils.ActionButtonTableCell;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -71,63 +70,31 @@ public class ClientsList extends UsersList<Client> {
     }
 
     /**
-     * Agrega una columna con botones "Editar" y los despliega en cada celda de la tabla. En otras palabras,
-     * muestra un botón "Editar" en cada fila de la tabla Cliente.
+     * Agrega una columna con botones "Editar" y los despliega en cada celda de la tabla.
      */
     @Override
     protected void addEditButtonColumn() {
-        TableColumn<Client, Void> edit_column = new TableColumn<>();
-
-        // Establece el elemento que contendrá cada una de las celdas de la columna.
-        // En este caso, cada celda de la columna será un objeto de la clase ActionButtonTableCell.
-        edit_column.setCellFactory(param -> {
-            ActionButtonTableCell<Client> edit_button = new ActionButtonTableCell<>("Editar");
-            // Establece la acción a realizar cuando se pulse el botón.
-            // La función openEditForm toma como argumento el objeto Client de la fila seleccionada.
-            edit_button.setButtonAction(event -> openEditForm(edit_button.getCurrentItem()));
-
-            // Retorna el botón a ser desplegado en la celda.
-            return edit_button;
-        });
-
-        // Agrega la columna "Editar" a la tabla.
-        table_view.getColumns().add(edit_column);
+        createActionButtonColumn("Editar", this::editButtonAction);
     }
 
     /**
-     * Abre el formulario ClientForm para editar un cliente existente.
+     * Abre el formulario ClientForm al presionar el botón "Editar".
      * Este método crea una instancia de ClientForm, pasando la instancia actual de ClientList y el objeto Client del
      * cliente a modificar.
      *
      * @param old_client El cliente a ser modificado.
      */
     @Override
-    protected void openEditForm(Client old_client) {
+    protected void editButtonAction(Client old_client) {
         new ClientForm(this, old_client);
     }
 
     /**
-     * Agrega una columna con botones "Borrar" y los despliega en cada celda de la tabla. En otras palabras,
-     * muestra un botón "Borrar" en cada fila de la tabla Cliente.
+     * Agrega una columna con botones "Borrar" y los despliega en cada celda de la tabla.
      */
     @Override
     protected void addDeleteButtonColumn() {
-        TableColumn<Client, Void> delete_column = new TableColumn<>();
-
-        // Establece el elemento que contendrá cada una de las celdas de la columna.
-        // En este caso, cada celda de la columna será un objeto de la clase ActionButtonTableCell.
-        delete_column.setCellFactory(param -> {
-            ActionButtonTableCell<Client> delete_button = new ActionButtonTableCell<>("Borrar");
-            // Establece la acción a realizar cuando se pulse el botón.
-            // La función deleteClientAction toma como argumento el objeto Client de la fila seleccionada.
-            delete_button.setButtonAction(event -> deleteClientAction(delete_button.getCurrentItem()));
-
-            // Retorna el botón a ser desplegado en la celda.
-            return delete_button;
-        });
-
-        // Agrega la columna "Borrar" a la tabla.
-        table_view.getColumns().add(delete_column);
+        createActionButtonColumn("Borrar", this::deleteButtonAction);
     }
 
     /**
@@ -136,7 +103,8 @@ public class ClientsList extends UsersList<Client> {
      *
      * @param client Datos del cliente a ser eliminado.
      */
-    private void deleteClientAction(Client client) {
+    @Override
+    protected void deleteButtonAction(Client client) {
         showConfirmationDialog(
             "Eliminar cliente",
             "¿Estás seguro de eliminar este cliente?"
