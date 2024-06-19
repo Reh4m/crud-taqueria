@@ -89,18 +89,18 @@ public class EmployeesList extends UsersList<Employee> {
      */
     @Override
     protected void addEditButtonColumn() {
-        createActionButtonColumn("Editar", this::openEditForm);
+        createActionButtonColumn("Editar", this::editButtonAction);
     }
 
     /**
-     * Abre el formulario EmployeeForm para editar un empleado existente.
+     * Abre el formulario EmployeeForm al presionar el botón "Editar".
      * Este método crea una instancia de EmployeeForm, pasando la instancia actual de EmployeesList y el objeto
      * Employee del empleado a modificar.
      *
      * @param old_employee El empleado a ser modificado.
      */
     @Override
-    protected void openEditForm(Employee old_employee) {
+    protected void editButtonAction(Employee old_employee) {
         new EmployeeForm(this, old_employee);
     }
 
