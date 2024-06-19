@@ -38,7 +38,7 @@ public class ActionButtonTableCell<T> extends TableCell<T, Void> {
      *
      * @return los datos de la fila seleccionada.
      */
-    private T getCurrentItem() {
+    public T getCurrentItem() {
         return getTableView().getItems().get(getIndex());
     }
 
@@ -53,10 +53,6 @@ public class ActionButtonTableCell<T> extends TableCell<T, Void> {
     protected void updateItem(Void item, boolean empty) {
         super.updateItem(item, empty);
 
-        if (!empty) {
-            setGraphic(action_button);
-        } else {
-            setGraphic(null);
-        }
+        if (!empty) setGraphic(action_button);
     }
 }
