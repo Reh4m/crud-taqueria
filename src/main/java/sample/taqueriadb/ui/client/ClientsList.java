@@ -156,6 +156,17 @@ public class ClientsList extends UsersList<Client> {
         table_view.getColumns().add(delete_column);
     }
 
+    private void deleteClientAction(Client client) {
+        showConfirmationDialog(
+            "Eliminar cliente",
+            "¿Estás seguro de eliminar este cliente?"
+        ).ifPresent(response -> {
+            if (response == ButtonType.OK) {
+                deleteClient(client.getId());
+            }
+        });
+    }
+
     /**
      * Elimina un cliente de la base de datos mediante su ID. Se ejecuta de forma asíncrona un DELETE a la base de
      * datos con la referencia del cliente. Por último, la tabla de clientes se actualiza.
