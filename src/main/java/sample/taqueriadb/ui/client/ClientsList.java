@@ -7,6 +7,7 @@ import javafx.scene.control.*;
 import sample.taqueriadb.base.UsersList;
 import sample.taqueriadb.dao.ClientDAO;
 import sample.taqueriadb.model.Client;
+import sample.taqueriadb.utils.ActionButtonTableCell;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -123,34 +124,11 @@ public class ClientsList extends UsersList<Client> {
     protected void addDeleteButtonColumn() {
         TableColumn<Client, Void> delete_column = new TableColumn<>();
 
-        delete_column.setCellFactory(param -> new TableCell<>() {
-            private final Button delete_button = new Button("Borrar");
+        delete_column.setCellFactory(param -> {
+            ActionButtonTableCell<Client> delete_button = new ActionButtonTableCell<>("Borrar");
+            delete_button.setButtonAction(event -> deleteClientAction(delete_button.getCurrentItem()));
 
-            // Al momento de presionar el botón "Borrar" se abre una ventana para confirmar la acción.
-            {
-                delete_button.setOnAction(actionEvent -> {
-                    // Obtiene los datos de la fila seleccionada.
-                    Client selected_record = table_view.getItems().get(this.getTableRow().getIndex());
-
-                    showConfirmationDialog(
-                        "Eliminar cliente",
-                        "¿Estás seguro de eliminar este cliente?"
-                    ).ifPresent(response -> {
-                        if (response == ButtonType.OK) {
-                            deleteClient(selected_record.getId());
-                        }
-                    });
-                });
-            }
-
-            // Se encarga de desplegar el botón "Borrar". En este caso, si la celda no está vacía, el delete_button se
-            // establece como el gráfico de la celda.
-            @Override
-            protected void updateItem(Void item, boolean empty) {
-                super.updateItem(item, empty);
-
-                if (!empty) setGraphic(delete_button);
-            }
+            return delete_button;
         });
 
         table_view.getColumns().add(delete_column);
