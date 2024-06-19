@@ -7,7 +7,6 @@ import javafx.scene.control.*;
 import sample.taqueriadb.model.Employee;
 import sample.taqueriadb.dao.EmployeeDAO;
 import sample.taqueriadb.base.UsersList;
-import sample.taqueriadb.utils.ActionButtonTableCell;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -63,11 +62,11 @@ public class EmployeesList extends UsersList<Employee> {
         TableColumn<Employee, String> name_column = createColumn("Nombre", "name");
 
         TableColumn<Employee, String> last_name_column = createColumn(
-                "Apellidos", "lastName"
+            "Apellidos", "lastName"
         );
 
         TableColumn<Employee, String> phone_number_column = createColumn(
-                "Número de teléfono", "phoneNumber"
+            "Número de teléfono", "phoneNumber"
         );
 
         TableColumn<Employee, String> email_column = createColumn("Email", "email");
@@ -86,27 +85,11 @@ public class EmployeesList extends UsersList<Employee> {
     }
 
     /**
-     * Agrega una columna con botones "Editar" y los despliega en cada celda de la tabla. En otras palabras,
-     * muestra un botón "Editar" en cada fila de la tabla Empleados.
+     * Agrega una columna con botones "Editar" y los despliega en cada celda de la tabla.
      */
     @Override
     protected void addEditButtonColumn() {
-        TableColumn<Employee, Void> edit_column = new TableColumn<>();
-
-        // Establece el elemento que contendrá cada una de las celdas de la columna.
-        // En este caso, cada celda de la columna será un objeto de la clase ActionButtonTableCell.
-        edit_column.setCellFactory(param -> {
-            ActionButtonTableCell<Employee> edit_button = new ActionButtonTableCell<>("Editar");
-            // Establece la acción a realizar cuando se pulse el botón.
-            // La función openEditForm toma como argumento el objeto Employee de la fila seleccionada.
-            edit_button.setButtonAction(event -> openEditForm(edit_button.getCurrentItem()));
-
-            // Retorna el botón a ser desplegado en la celda.
-            return edit_button;
-        });
-
-        // Agrega la columna "Editar" a la tabla.
-        table_view.getColumns().add(edit_column);
+        createActionButtonColumn("Editar", this::openEditForm);
     }
 
     /**
@@ -122,27 +105,11 @@ public class EmployeesList extends UsersList<Employee> {
     }
 
     /**
-     * Agrega una columna con botones "Borrar" y los despliega en cada celda de la tabla. En otras palabras,
-     * muestra un botón "Borrar" en cada fila de la tabla Empleado.
+     * Agrega una columna con botones "Borrar" y los despliega en cada celda de la tabla.
      */
     @Override
     protected void addDeleteButtonColumn() {
-        TableColumn<Employee, Void> delete_column = new TableColumn<>();
-
-        // Establece el elemento que contendrá cada una de las celdas de la columna.
-        // En este caso, cada celda de la columna será un objeto de la clase ActionButtonTableCell.
-        delete_column.setCellFactory(param -> {
-            ActionButtonTableCell<Employee> delete_button = new ActionButtonTableCell<>("Borrar");
-            // Establece la acción a realizar cuando se pulse el botón.
-            // La función deleteClientAction toma como argumento el objeto Employee de la fila seleccionada.
-            delete_button.setButtonAction(event -> deleteEmployeeAction(delete_button.getCurrentItem()));
-
-            // Retorna el botón a ser desplegado en la celda.
-            return delete_button;
-        });
-
-        // Agrega la columna "Borrar" a la tabla.
-        table_view.getColumns().add(delete_column);
+        createActionButtonColumn("Borrar", this::deleteButtonAction);
     }
 
     /**
@@ -151,10 +118,11 @@ public class EmployeesList extends UsersList<Employee> {
      *
      * @param employee Datos del empleado a ser eliminado.
      */
-    private void deleteEmployeeAction(Employee employee) {
+    @Override
+    protected void deleteButtonAction(Employee employee) {
         showConfirmationDialog(
-                "Eliminar empleado",
-                "¿Estás seguro de eliminar este empleado?"
+            "Eliminar empleado",
+            "¿Estás seguro de eliminar este empleado?"
         ).ifPresent(response -> {
             if (response == ButtonType.OK) {
                 deleteEmployee(employee.getId());
