@@ -6,7 +6,7 @@ import javafx.collections.ObservableList;
 import javafx.scene.control.*;
 import sample.taqueriadb.model.Employee;
 import sample.taqueriadb.dao.EmployeeDAO;
-import sample.taqueriadb.base.UsersList;
+import sample.taqueriadb.base.ItemsList;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -17,7 +17,7 @@ import java.util.concurrent.CompletableFuture;
 /**
  * Ventana que muestra la lista de empleados registrados.
  */
-public class EmployeesList extends UsersList<Employee> {
+public class EmployeesList extends ItemsList<Employee> {
 
     public EmployeesList() {
         super("Lista de empleados");
@@ -29,7 +29,7 @@ public class EmployeesList extends UsersList<Employee> {
      * @return ObservableList con la información de los empleados.
      */
     @Override
-    protected ObservableList<Employee> getUsers() {
+    protected ObservableList<Employee> getItems() {
         ObservableList<Employee> employees = FXCollections.observableArrayList();
 
         try (ResultSet resultSet = EmployeeDAO.getEmployees()) {
@@ -53,9 +53,9 @@ public class EmployeesList extends UsersList<Employee> {
      * Muestra la información de los empleados asignándolos a una columna en la tabla de empleados.
      */
     @Override
-    protected void showUsersList() {
+    protected void showItemsList() {
         // Guarda los empleados recuperados desde la base de datos.
-        users = getUsers();
+        items = getItems();
 
         TableColumn<Employee, String> id_column = createColumn("ID", "id");
 
@@ -81,7 +81,7 @@ public class EmployeesList extends UsersList<Employee> {
             table_view.getColumns().add(column);
         }
 
-        table_view.setItems(users);
+        table_view.setItems(items);
     }
 
     /**
@@ -161,7 +161,7 @@ public class EmployeesList extends UsersList<Employee> {
      * @return el botón que se crea para agregar nuevos empleados.
      */
     @Override
-    protected Button addNewUserButton() {
+    protected Button addNewItemButton() {
         Button btn_add_employee = new Button("Agregar empleado");
         btn_add_employee.setMaxWidth(Double.MAX_VALUE);
         // Establece la acción que se ejecutará cuando se dé clic en el botón.

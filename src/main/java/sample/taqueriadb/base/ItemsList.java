@@ -1,6 +1,5 @@
 package sample.taqueriadb.base;
 
-import com.mysql.cj.xdevapi.Table;
 import javafx.collections.ObservableList;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -13,18 +12,17 @@ import java.util.Optional;
 import java.util.function.Consumer;
 
 /**
- * Plantilla para crear una ventana de lista de usuarios. Esto hace referencia al tipo de usuario que se está manejando
- * en una clase hijo al heredar la clase abstracta. La clase utiliza tipos genéricos (T), que representa el tipo de
- * usuario.
+ * Clase abstracta que sirve como plantilla para crear una lista de elementos.
+ * La clase utiliza genéricos (T), que representa el tipo de elemento que se está manejando.
  *
- * @param <T> Clase genérica para definir el tipo de usuario.
+ * @param <T> Clase genérica para definir el tipo de dato.
  */
-public abstract class UsersList<T> extends Stage {
+public abstract class ItemsList<T> extends Stage {
     protected Scene scene;
     protected TableView<T> table_view;
-    protected ObservableList<T> users;
+    protected ObservableList<T> items;
 
-    public UsersList(String title) {
+    public ItemsList(String title) {
         createUI();
         this.setTitle(title);
         this.setScene(scene);
@@ -32,11 +30,11 @@ public abstract class UsersList<T> extends Stage {
     }
 
     private void createUI() {
-        // Tabla de usuarios.
+        // Tabla de elementos.
         table_view = new TableView<>();
 
-        // Muestra las columnas de la tabla con la información de los usuarios.
-        showUsersList();
+        // Muestra las columnas de la tabla con la información de los elementos.
+        showItemsList();
 
         // Muestra la columna "Editar".
         addEditButtonColumn();
@@ -44,38 +42,38 @@ public abstract class UsersList<T> extends Stage {
         // Muestra la columna "Borrar".
         addDeleteButtonColumn();
 
-        // Abre una ventana con un formulario para agregar un nuevo usuario.
-        Button btn_add_user = addNewUserButton();
+        // Abre una ventana con un formulario para agregar un nuevo elemento.
+        Button btn_add_item = addNewItemButton();
 
         // Layout principal.
-        // Contiene la tabla de usuarios.
+        // Contiene la tabla de elementos.
         VBox container = new VBox();
-        container.getChildren().addAll(table_view, btn_add_user);
+        container.getChildren().addAll(table_view, btn_add_item);
 
         // Ventana principal.
         scene = new Scene(container, 500, 500);
     }
 
-    protected abstract ObservableList<T> getUsers();
+    protected abstract ObservableList<T> getItems();
 
-    protected abstract void showUsersList();
+    protected abstract void showItemsList();
 
     protected abstract void addEditButtonColumn();
 
     protected abstract void addDeleteButtonColumn();
 
-    protected abstract Button addNewUserButton();
+    protected abstract Button addNewItemButton();
 
     protected abstract void editButtonAction(T item);
 
     protected abstract void deleteButtonAction(T item);
 
     /**
-     * Reduce el código necesario para crear una columna en la tabla.
+     * Reduce el código necesario para crear una columna (TableColumn) en la tabla (TableView).
      *
-     * @param column_name nombre de la columna.
-     * @param property_name nombre de la propiedad.
-     * @return columna de la tabla de empleados.
+     * @param column_name El nombre de la columna. Esta será mostrada en la cabeza de la columna.
+     * @param property_name El nombre de la propiedad que será mostrada en la celda de la columna.
+     * @return un objeto TableColumn con la información específicada.
      */
     protected TableColumn<T, String> createColumn(String column_name, String property_name) {
         TableColumn<T, String> column = new TableColumn<>(column_name);
@@ -112,24 +110,23 @@ public abstract class UsersList<T> extends Stage {
     }
 
     /**
-     * Actualiza la tabla de empleados en la interfaz. Su propósito es obtener nuevamente la lista de empleados y
-     * actualizar el TableView con los nuevos datos.
+     * Recarga la lista de elementos en el TableView.
+     * Esto es útil en casos donde la fuente de datos subyacente ha cambiado de una forma que no es observada por el
+     * propio TableView.
      */
     public void refreshTable() {
-        // Obtiene la lista de empleados actualizada.
-        users = getUsers();
+        // Obtiene la lista actualizada de elementos.
+        items = getItems();
 
         // Establece nuevamente el contenido del TableView.
-        table_view.setItems(users);
+        table_view.setItems(items);
 
         // Actualiza el TableView para reflejar los cambios.
-        // Esto es útil en casos donde la fuente de datos subyacente ha cambiado de una forma que no es observada por
-        // el propio TableView.
         table_view.refresh();
     }
 
     /**
-     * Muestra una ventana de confirmación al eliminar un usuario.
+     * Muestra una ventana de confirmación al eliminar un elemento.
      *
      * @param title Título de la ventana.
      * @param message Mensaje de confirmación.

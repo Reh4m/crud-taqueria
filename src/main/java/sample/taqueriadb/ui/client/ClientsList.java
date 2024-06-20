@@ -4,7 +4,7 @@ import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.*;
-import sample.taqueriadb.base.UsersList;
+import sample.taqueriadb.base.ItemsList;
 import sample.taqueriadb.dao.ClientDAO;
 import sample.taqueriadb.model.Client;
 
@@ -17,7 +17,7 @@ import java.util.concurrent.CompletableFuture;
 /**
  * Ventana que muestra la lista de clientes registrados.
  */
-public class ClientsList extends UsersList<Client> {
+public class ClientsList extends ItemsList<Client> {
 
     public ClientsList() {
         super("Lista de clientes");
@@ -29,7 +29,7 @@ public class ClientsList extends UsersList<Client> {
      * @return ObservableList con la información de los clientes.
      */
     @Override
-    protected ObservableList<Client> getUsers() {
+    protected ObservableList<Client> getItems() {
         ObservableList<Client> clients = FXCollections.observableArrayList();
 
         try (ResultSet resultSet = ClientDAO.getClients()) {
@@ -50,9 +50,9 @@ public class ClientsList extends UsersList<Client> {
      * Muestra la información de los clientes asignándolos a una columna en la tabla de clientes.
      */
     @Override
-    protected void showUsersList() {
+    protected void showItemsList() {
         // Guarda los empleados recuperados desde la base de datos.
-        users = getUsers();
+        items = getItems();
 
         TableColumn<Client, String> id_column = createColumn("ID", "id");
 
@@ -66,7 +66,7 @@ public class ClientsList extends UsersList<Client> {
             table_view.getColumns().add(column);
         }
 
-        table_view.setItems(users);
+        table_view.setItems(items);
     }
 
     /**
@@ -146,7 +146,7 @@ public class ClientsList extends UsersList<Client> {
      * @return el botón que se crea para agregar nuevos clientes.
      */
     @Override
-    protected Button addNewUserButton() {
+    protected Button addNewItemButton() {
         Button btn_add_client = new Button("Agregar cliente");
         btn_add_client.setMaxWidth(Double.MAX_VALUE);
         // Establece la acción que se ejecutará cuando se dé clic en el botón.
